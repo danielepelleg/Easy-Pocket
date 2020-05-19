@@ -1,14 +1,20 @@
 import React from 'react';
-import logo from './resources/hand.svg';
+import Home from './Home.js'
+import Login from './components/Login.js'
 import './App.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+        </Switch>
+        
+      </div>
+    </Router>
   );
 }
 

@@ -4,6 +4,8 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Logo from './resources/hand.svg'
 
+import {Link} from 'react-router-dom';
+
 import './App.css';
 
 // Import Local Styles
@@ -21,9 +23,11 @@ function Home() {
                         <h3>Il modo più semplice per gestire le tue spese. <br></br>
                         Registra le spese che fai, alla gestione ci pensa lui.</h3>
                         </div>
-                        <Button variant="contained" className={classes.startButton} disableElevation>
-                            Get Started
-                        </Button>
+                        <Link to="/login">
+                            <Button variant="contained" className={classes.startButton} disableElevation>
+                                Get Started
+                            </Button>
+                        </Link>
                     </Grid>
                 </Grid>
                 <Grid container xs={6} justify="center" alignItems="center">
