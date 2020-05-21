@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import '../App.css';
+
+/// Components
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
@@ -7,17 +8,26 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {Link, withRouter } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import { withFirebase } from './Firebase';
+/// Styles
+import '../App.css';
+import { makeStyles } from '@material-ui/core/styles';
+
+/// React Router
+import {Link, withRouter } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
+
+/// Firebase
+import { withFirebase } from './Firebase';
 import { compose } from 'recompose';
 
+/**
+ *    *** FORM STYLES ***
+ */
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -42,20 +52,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+/**
+ *  *** INITIAL STATE ***
+ * Used to reset the Login state once the User signs-in.
+ */
 const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
 };
 
+
+/**
+ * SIGN IN CLASS
+ */
 class SignIn extends Component {
 
+  /**
+   * Class Constructor
+   */
   constructor(props) {
     super(props);
  
     this.state = { ...INITIAL_STATE };
   }
  
+  /**
+   *      *** USER AUTHENTICATION ***
+   * 
+   * Submit the forms. Sign the user in, clear the state with the 
+   *  authenticated and redirect him to his Home Page.
+   */
   onSubmit = event => {
     const { email, password } = this.state;
  
@@ -72,12 +100,15 @@ class SignIn extends Component {
     event.preventDefault();
   };
  
+  /**
+   *      *** ON CHANGE METHOD ***
+   * Change the State on form's update.
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
-
     const { 
       email, 
       password, 
@@ -162,6 +193,11 @@ class SignIn extends Component {
   }
 }
 
+
+/**
+ *    *** SIGN IN PAGE ***
+ * Render the Sign In Class with custom styles.
+ */
 export default function SignInPage() {
   const classes = useStyles();
 
@@ -170,6 +206,11 @@ export default function SignInPage() {
   );
 }
 
+
+/**
+ * Since the higher-order components don't depend on each other, the order doesn't matter. 
+ * The compose function applies the higher-order components from right to left.
+ */
 const SignInBase = compose(
   withRouter,
   withFirebase,
