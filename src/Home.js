@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Logo from './resources/hand.svg'
 
+import * as ROUTES from './constants/routes';
 import {Link} from 'react-router-dom';
 
 import './App.css';
@@ -17,18 +18,18 @@ function Home() {
     return (
         <Grid container className={classes.container}>
                 <Grid container xs={6} justify="center" alignItems="center" >
-                    <Grid container className={classes.textBox} >
+                    <Box container className={classes.textBox} >
                         <h1>Pocket Money</h1>
                         <div>
                         <h3>Il modo più semplice per gestire le tue spese. <br></br>
                         Registra le spese che fai, alla gestione ci pensa lui.</h3>
                         </div>
-                        <Link to="/login">
-                            <Button variant="contained" className={classes.startButton} disableElevation>
+                        <Link to={ROUTES.SIGN_IN}>
+                            <Button variant="contained" className={classes.startButton}>
                                 Get Started
                             </Button>
                         </Link>
-                    </Grid>
+                    </Box>
                 </Grid>
                 <Grid container xs={6} justify="center" alignItems="center">
                     <Box component="span" className={classes.logoBox} >

@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
   },
+
+
   textBox: {
     display: "flex",
     justifyContent: "center",
@@ -17,19 +19,28 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     width: "70%",
     padding: '0 30px 30px',
+    textAlign: "center",
   },
+
+
   logoBox: {
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
     height: "90vh"
   },
+
+
   logo: {
       height: 400,
       width: 400,
   },
+
+
   container: {
   },
+
+
   startButton: {
     border: 0,
     borderRadius: 12,
@@ -43,11 +54,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFB00D",
     marginTop: 30,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
+  
 }));
 
 export { useStyles };
