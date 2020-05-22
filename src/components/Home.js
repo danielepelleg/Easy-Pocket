@@ -3,7 +3,7 @@ import './../App.css';
 
 function Main() {
   return (
-    <h2>BENVENUTO</h2>
+    <h2>PAGINA UTENTE</h2>
   );
 }
 
