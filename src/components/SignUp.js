@@ -1,22 +1,32 @@
 import React, {Component} from "react";
+
+/// Components
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Link, withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { withFirebase } from './Firebase';
+/// Styles
+import { makeStyles } from "@material-ui/core/styles";
+
+/// React Router
+import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from '../constants/routes';
+
+/// Firebase
+import { withFirebase } from './Firebase';
 import { compose } from 'recompose';
 
+/**
+ *    *** FORM STYLES ***
+ */
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -24,35 +34,61 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, .75)",
+    borderRadius: "12px",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    color: "black",
   },
+
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
+
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "90%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+
 }));
 
+
+/**
+ *  *** INITIAL STATE ***
+ * Used to reset the Login state once the User signs-in.
+ */
 const INITIAL_STATE = {
-  username: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
   error: null,
 };
 
+
+/**
+ * SIGN UP CLASS
+ */
 class SignUp extends Component {
+
+  /**
+   * Class Constructor
+   */
   constructor(props) {
     super(props);
 
     this.state = { ...INITIAL_STATE };
   }
 
+  /**
+   *      *** USER REGISTRATION ***
+   * 
+   * Submit the forms. Sign the user up, clear the state 
+   * and redirect him to his Home Page.
+   */
   onSubmit = (event) => {
     const {email, passwordOne } = this.state;
  
@@ -69,14 +105,16 @@ class SignUp extends Component {
     event.preventDefault();
   };
 
+  /**
+   *      *** ON CHANGE METHOD ***
+   * Change the State on form's update.
+   */
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const {
-      firstName,
-      lastName,
       email,
       passwordOne,
       passwordTwo,
@@ -86,9 +124,7 @@ class SignUp extends Component {
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
-      email === '' ||
-      firstName === '' ||
-      firstName === ''; 
+      email === '';
 
     return (
       <Container component="main" maxWidth="xs">
@@ -102,35 +138,6 @@ class SignUp extends Component {
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.onSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  value={firstName}
-                  onChange={this.onChange}
-                  placeholder="Name"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  value={lastName}
-                  onChange={this.onChange}
-                  placeholder="Surname"
-                  autoComplete="lname"
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -197,7 +204,7 @@ class SignUp extends Component {
             {error && <p>{error.message}</p>}
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to = {ROUTES.SIGN_IN} >
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -210,6 +217,11 @@ class SignUp extends Component {
   }
 }
 
+
+/**
+ *    *** SIGN UP PAGE ***
+ * Render the Sign Up Class with custom styles.
+ */
 export default function SignUpPage() {
   const classes = useStyles();
 
@@ -218,10 +230,13 @@ export default function SignUpPage() {
   );
 }
 
-/// the compose function applies the higher-order components from right to left.
+/**
+ * Since the higher-order components don't depend on each other, the order doesn't matter. 
+ * The compose function applies the higher-order components from right to left.
+ */
 const SignUpBase = compose(
   withRouter,
   withFirebase,
 )(SignUp);
 
-export {SignUpBase};
+export {SignUp};

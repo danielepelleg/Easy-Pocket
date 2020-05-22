@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 /// Styles
-import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 
 /// React Router
@@ -30,11 +29,15 @@ import { compose } from 'recompose';
  */
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(10),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: "rgba(255, 255, 255, .75)",
+    borderRadius: "12px",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    color: "black",
   },
 
   avatar: {
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '90%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   
@@ -81,8 +84,8 @@ class SignIn extends Component {
   /**
    *      *** USER AUTHENTICATION ***
    * 
-   * Submit the forms. Sign the user in, clear the state with the 
-   *  authenticated and redirect him to his Home Page.
+   * Submit the forms. Sign the user in, clear the state 
+   * and redirect him to his Home Page.
    */
   onSubmit = event => {
     const { email, password } = this.state;
@@ -126,7 +129,7 @@ class SignIn extends Component {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign In
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.onSubmit}>
             <TextField
@@ -179,7 +182,7 @@ class SignIn extends Component {
                 </Link>
               </Grid>
               <Grid item>
-                <Link to={ROUTES.SIGN_UP}>
+                <Link to = {ROUTES.SIGN_UP} >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
