@@ -2,8 +2,15 @@
   "name": "easy-pocket",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@material-ui/core": "^4.9.14",
+<<<<<<< Updated upstream
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -17,6 +24,30 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+=======
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.9.14",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "chart.js": "^2.8.0",
+    "clsx": "^1.0.4",
+    "firebase": "^7.15.0",
+    "history": "^4.9.0",
+    "moment": "^2.24.0",
+    "node-sass": "^4.12.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-chartjs-2": "^2.7.6",
+    "react-dom": "^16.8.6",
+    "react-perfect-scrollbar": "^1.5.3",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "^3.0.1",
+    "recompose": "^0.30.0",
+    "underscore": "^1.9.1",
+    "uuid": "^3.3.2",
+    "validate.js": "^0.13.1"
+>>>>>>> Stashed changes
   },
   "eslintConfig": {
     "extends": "react-app"
