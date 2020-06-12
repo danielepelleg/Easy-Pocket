@@ -5,6 +5,10 @@ import { makeStyles } from '@material-ui/styles';
 import { Paper, Input } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
+/**
+ * Search Bar
+ */
+
 const useStyles = makeStyles(theme => ({
   root: {
     borderRadius: '4px',
