@@ -21,7 +21,7 @@ import {Link, withRouter } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
 /// Firebase
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../../components/Firebase';
 import { compose } from 'recompose';
 
 /**

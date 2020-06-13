@@ -1,7 +1,7 @@
 import React from 'react';
  
 /// Firebase
-import { withFirebase } from '../Firebase';
+import { withFirebase } from '../components/Firebase';
 
 
 /**
