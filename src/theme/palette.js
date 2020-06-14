@@ -2,16 +2,28 @@ import { colors } from '@material-ui/core';
 
 const white = '#FFFFFF';
 const black = '#000000';
-const orange = '#FF9500';
+//const orange = '#FF9500';
+const red = "#E8310C";
+const fireRed = "#FF0500";
+const pink = "#F50069";
+const orange = "#FF5000";
+const yellow = "#F57000";
 
 export default {
   black,
   white,
+  default: {
+    light: yellow,
+    2: orange,
+    main: red,
+    3: fireRed,
+    dark: pink,
+  },
   primary: {
     contrastText: white,
-    dark: colors.indigo[900],
-    main: colors.indigo[500],
-    light: colors.indigo[100]
+    dark: colors.orange[900],
+    main: colors.orange[500],
+    light: colors.orange[100]
   },
   secondary: {
     contrastText: white,
