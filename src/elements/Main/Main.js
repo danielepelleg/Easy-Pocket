@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 2px 3px 0 rgba(255, 255, 255, .4)",
     borderRadius: 12,
     width: "70%",
+    height: "50%",
     padding: "0 30px 30px",
     textAlign: "center",
     color: "white",
