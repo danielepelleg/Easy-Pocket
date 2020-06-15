@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { Chart } from "react-chartjs-2";
@@ -10,7 +10,15 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import "./assets/scss/index.scss";
 import validators from "./common/validators";
 import Routes from "./Routes";
-import { withFirebase } from './components/Firebase';
+
+/**
+ *  *** Session Handling Imports ***
+ * Use the new context to provide the authenticated user to components that are interested in it.
+ * 
+ * withAuthentication now passes the authenticated user implicitly via React's Context, 
+ * rather than explicitly through the component tree using props.
+ */
+import { withAuthentication } from "components/Session";
 
 const browserHistory = createBrowserHistory();
 
@@ -24,48 +32,22 @@ validate.validators = {
 };
 
 /**
- * Since our application is made under the umbrella of App component, 
+ * Since our application is made under the umbrella of App component,
  * it's sufficient to manage the session state in the App component using React's local state.
- * 
- * The App component only needs to keep track of an authenticated user (session). If a user is authenticated, 
- * store it in the local state and pass the authenticated user object down to all components that are interested in it. 
- * Otherwise, pass the authenticated user down as null. That way, all components interested in it can adjust their behavior 
+ *
+ * The App component only needs to keep track of an authenticated user (session). If a user is authenticated,
+ * store it in the local state and pass the authenticated user object down to all components that are interested in it.
+ * Otherwise, pass the authenticated user down as null. That way, all components interested in it can adjust their behavior
  * (e.g. use conditional rendering) based on the session state.
  */
-class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <Router history={browserHistory}>
+      <div className="App">
+        <Routes />
+      </div>
+    </Router>
+  </ThemeProvider>
+);
 
-    this.state = {
-      authUser: null,
-    };
-  }
-
-  componentDidMount() {
-    this.listener = this.props.firebase.auth.onAuthStateChanged(
-      authUser => {
-        authUser
-          ? this.setState({ authUser })
-          : this.setState({ authUser: null });
-      },
-    );
-  }
-
-  componentWillUnmount() {
-    this.listener();
-  }
-
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <Router history={browserHistory}>
-          <div className="App">
-            <Routes authUser={this.state.authUser} />
-          </div>
-        </Router>
-      </ThemeProvider>
-    );
-  }
-}
-
-export default withFirebase(App);
+export default withAuthentication(App);
