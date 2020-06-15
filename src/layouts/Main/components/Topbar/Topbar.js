@@ -2,22 +2,23 @@ import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import InputIcon from '@material-ui/icons/Input';
+import SignOutButton from '../../../../elements/SignOut';
 
 const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none',
     backgroundColor: theme.palette.default.main
   },
+  logo: {
+    height: '36px',
+    width: '36px'
+  },
   flexGrow: {
     flexGrow: 1
-  },
-  signOutButton: {
-    marginLeft: theme.spacing(1)
   }
 }));
 
@@ -37,9 +38,11 @@ const Topbar = props => {
         <RouterLink to="/">
           <img
             alt="Logo"
-            src="/images/logos/logo--white.svg"
+            src="/images/logos/logo36.png"
+            className = {classes.logo}
           />
         </RouterLink>
+        <h2><pre> Pocket Money</pre></h2>
         <div className={classes.flexGrow} />
         <Hidden mdDown>
           <IconButton color="inherit">
@@ -51,12 +54,10 @@ const Topbar = props => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton
-            className={classes.signOutButton}
-            color="inherit"
-          >
-            <InputIcon />
-          </IconButton>
+          
+        <SignOutButton />
+      
+
         </Hidden>
         <Hidden lgUp>
           <IconButton
