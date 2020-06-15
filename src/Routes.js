@@ -12,8 +12,11 @@ import {
   Main
 } from './elements'
 
-const Routes = () => {
-  return (
+const Routes = ({ authUser }) => (
+  <div>{authUser ? <RoutesAuth /> : <RoutesNonAuth />}</div>
+);
+
+const RoutesAuth = () => (
     <Switch>
       <Redirect
         exact
@@ -21,7 +24,20 @@ const Routes = () => {
         to={ROUTES.MAIN}
       />
       <RouteWithLayout
+        exact path={ROUTES.MAIN} component={Main} layout={MinimalLayout}
+      />
+      <RouteWithLayout
         exact path={ROUTES.HOME} component={Home} layout={MainLayout}
+      />
+    </Switch>
+)
+
+const RoutesNonAuth = () => (
+    <Switch>
+      <Redirect
+        exact
+        from="/"
+        to={ROUTES.MAIN}
       />
       <RouteWithLayout
         exact path={ROUTES.MAIN} component={Main} layout={MinimalLayout}
@@ -33,7 +49,6 @@ const Routes = () => {
         exact path={ROUTES.SIGN_UP} component={SignUp} layout={MinimalLayout}
       />
     </Switch>
-  )
-}
+)
 
 export default Routes
