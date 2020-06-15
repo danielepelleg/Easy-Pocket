@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import SignOutButton from '../../../../elements/SignOut';
+import SignOutButton from '../../../../components/SignOut';
 
 const useStyles = makeStyles(theme => ({
   root: {

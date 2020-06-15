@@ -10,7 +10,7 @@ import {
   SignIn,
   SignUp,
   Main
-} from './elements'
+} from './components'
 
 const Routes = ({ authUser }) => (
   <div>{authUser ? <RoutesAuth /> : <RoutesNonAuth />}</div>

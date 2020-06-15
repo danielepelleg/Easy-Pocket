@@ -23,8 +23,15 @@ validate.validators = {
   ...validators,
 };
 
-/// Style
-//import './App.css';
+/**
+ * Since our application is made under the umbrella of App component, 
+ * it's sufficient to manage the session state in the App component using React's local state.
+ * 
+ * The App component only needs to keep track of an authenticated user (session). If a user is authenticated, 
+ * store it in the local state and pass the authenticated user object down to all components that are interested in it. 
+ * Otherwise, pass the authenticated user down as null. That way, all components interested in it can adjust their behavior 
+ * (e.g. use conditional rendering) based on the session state.
+ */
 class App extends Component {
   constructor(props) {
     super(props);

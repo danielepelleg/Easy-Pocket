@@ -3,7 +3,7 @@ import InputIcon from "@material-ui/icons/Input";
 import {IconButton} from '@material-ui/core';
 
 /// Firebase
-import { withFirebase } from '../../components/Firebase';
+import { withFirebase } from '../Firebase';
 
 /**
  *    *** SIGN OUT BUTTON ***

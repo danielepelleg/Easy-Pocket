@@ -4,7 +4,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Logo from "./resources/hand.svg";
+import Logo from "../../resources/hand.svg";
 
 /// React Router
 import * as ROUTES from "../../constants/routes";
