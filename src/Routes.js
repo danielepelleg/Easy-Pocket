@@ -21,7 +21,7 @@ const RoutesAuth = () => (
       <Redirect
         exact
         from="/"
-        to={ROUTES.MAIN}
+        to={ROUTES.HOME}
       />
       <RouteWithLayout
         exact path={ROUTES.MAIN} component={Main} layout={MinimalLayout}
@@ -30,7 +30,7 @@ const RoutesAuth = () => (
         exact path={ROUTES.HOME} component={Home} layout={MainLayout}
       />
     </Switch>
-)
+);
 
 const RoutesNonAuth = () => (
     <Switch>
@@ -41,14 +41,14 @@ const RoutesNonAuth = () => (
       />
       <RouteWithLayout
         exact path={ROUTES.MAIN} component={Main} layout={MinimalLayout}
+      />   
+      <RouteWithLayout
+        exact path={ROUTES.SIGN_UP} component={SignUp} layout={MinimalLayout}
       />
       <RouteWithLayout
         exact path={ROUTES.SIGN_IN} component={SignIn} layout={MinimalLayout}
       />
-      <RouteWithLayout
-        exact path={ROUTES.SIGN_UP} component={SignUp} layout={MinimalLayout}
-      />
     </Switch>
-)
+);
 
 export default Routes

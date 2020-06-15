@@ -48,7 +48,7 @@ class Firebase {
    * about the currently authenticated user. If no user is authenticated, 
    * nothing will happen when this function is called.
    */
-  doSignOut = () => this.auth.doSignOut();
+  doSignOut = () => this.auth.signOut();
 
   /** 
    * *** RESET PASSWORD ***
