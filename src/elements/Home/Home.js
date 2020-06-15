@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-
+/* {
 import {
     Budget,
     TotalUsers,
@@ -10,7 +10,7 @@ import {
     UsersByDevice,
     LatestProducts,
     LatestOrders
-} from './HomeComponents';
+} from './HomeComponents'; } */
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,7 +34,7 @@ const Home = () => {
                     xl={3}
                     xs={12}
                 >
-                    <Budget />
+                    {/* <Budget /> */}
                 </Grid>
                 <Grid
                     item
@@ -43,7 +43,7 @@ const Home = () => {
                     xl={3}
                     xs={12}
                 >
-                    <TotalUsers />
+                    {/* <TotalUsers /> */}
                 </Grid>
                 <Grid
                     item
@@ -52,7 +52,7 @@ const Home = () => {
                     xl={3}
                     xs={12}
                 >
-                    <TasksProgress />
+                    {/* <TasksProgress /> */}
                 </Grid>
                 <Grid
                     item
@@ -61,7 +61,7 @@ const Home = () => {
                     xl={3}
                     xs={12}
                 >
-                    <TotalProfit />
+                    {/* <TotalProfit /> */}
                 </Grid>
                 <Grid
                     item
@@ -70,7 +70,7 @@ const Home = () => {
                     xl={3}
                     xs={12}
                 >
-                    <UsersByDevice />
+                    {/* <UsersByDevice /> */}
                 </Grid>
                 <Grid
                     item
@@ -79,7 +79,7 @@ const Home = () => {
                     xl={3}
                     xs={12}
                 >
-                    <LatestProducts />
+                    {/* <LatestProducts /> */}
                 </Grid>
                 <Grid
                     item
@@ -88,7 +88,7 @@ const Home = () => {
                     xl={9}
                     xs={12}
                 >
-                    <LatestOrders />
+                   {/* <LatestOrders /> */}
                 </Grid>
             </Grid>
         </div>
