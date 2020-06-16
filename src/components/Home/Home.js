@@ -1,6 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
+import { withAuthorization } from '../../components/Session';
+
+
 /* {
 import {
     Budget,
@@ -95,5 +98,6 @@ const Home = () => {
     );
 };
 
-
-export default Home;
+const condition = authUser => !!authUser;
+ 
+export default withAuthorization(condition)(Home);

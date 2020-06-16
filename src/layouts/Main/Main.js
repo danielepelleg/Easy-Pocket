@@ -6,6 +6,9 @@ import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar, Footer } from './components';
 
+import { withAuthorization } from '../../components/Session'
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: 56,
@@ -68,4 +71,6 @@ Main.propTypes = {
   children: PropTypes.node
 };
 
-export default Main;
+const condition = authUser => !!authUser;
+ 
+export default withAuthorization(condition)(Main);
