@@ -7,7 +7,7 @@ export default class LoginCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        isFlipped: false
+      isFlipped: false,
     };
     this.flipCard = this.flipCard.bind(this);
   }
@@ -19,9 +19,14 @@ export default class LoginCard extends React.Component {
 
   render() {
     return (
-      <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="vertical">
+      <ReactCardFlip
+        isFlipped={this.state.isFlipped}
+        flipDirection="vertical"
+        flipSpeedBackToFront={0.8}
+        flipSpeedFrontToBack={0.8}
+      >
         <SignIn {...this.props} handleFlip={this.flipCard}></SignIn>
-        
+
         <PasswordForget
           {...this.props}
           handleFlip={this.flipCard}
