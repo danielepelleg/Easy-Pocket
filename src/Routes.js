@@ -5,52 +5,27 @@ import {RouteWithLayout} from './components';
 import {Main as MainLayout, Minimal as MinimalLayout} from './layouts';
 import * as ROUTES from './constants/routes';
 
-import { AuthUserContext } from 'components/Session';
-
 import {
   Home,
-  SignIn,
   SignUp,
   Main,
   Login,
 } from './components'
 
-/**
- * The Navigation component uses the new context to consume the authenticated user
- * @param {authUser} | the authenticated user
- */
-const Routes = ({ authUser }) => (
-  <div>
-    <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <RoutesAuth /> : <RoutesNonAuth />
-      }
-    </AuthUserContext.Consumer>
-  </div>
-);
 
-const RoutesAuth = () => (
+
+const Routes = () => (
     <Switch>
       <Redirect
         exact
         from="/"
-        to={ROUTES.HOME}
+        to={ROUTES.MAIN}
       />
       <RouteWithLayout
         exact path={ROUTES.MAIN} component={Main} layout={MinimalLayout}
       />
       <RouteWithLayout
         exact path={ROUTES.HOME} component={Home} layout={MainLayout}
-      />
-    </Switch>
-);
-
-const RoutesNonAuth = () => (
-    <Switch>
-      <Redirect
-        exact
-        from="/"
-        to={ROUTES.MAIN}
       />
       <RouteWithLayout
         exact path={ROUTES.MAIN} component={Main} layout={MinimalLayout}
@@ -63,5 +38,4 @@ const RoutesNonAuth = () => (
       />
     </Switch>
 );
-
 export default Routes
