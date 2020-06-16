@@ -6,8 +6,6 @@ import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -106,7 +104,7 @@ class PasswordForget extends Component {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign In
+            Password Forget
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.onSubmit}>
             <TextField
