@@ -239,4 +239,4 @@ const SignUpBase = compose(
   withFirebase,
 )(SignUp);
 
-export {SignUp};
+export {SignUpBase};

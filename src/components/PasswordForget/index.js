@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 
 /// Components
 import Box from '@material-ui/core/Box';
@@ -13,16 +13,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-/// Styles
-import { makeStyles } from '@material-ui/core/styles';
-
 /// React Router
-import {Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
 /// Firebase
 import { withFirebase } from '../Firebase';
-import { compose } from 'recompose';
+
 
 /**
  *    *** FORM STYLES ***
@@ -54,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-
+ 
 
 /**
  *  *** INITIAL STATE ***
@@ -62,39 +59,23 @@ const useStyles = makeStyles((theme) => ({
  */
 const INITIAL_STATE = {
   email: '',
-  password: '',
   error: null,
 };
-
-
-/**
- * SIGN IN CLASS
- */
-class SignIn extends Component {
-
-  /**
-   * Class Constructor
-   */
+ 
+class PasswordForget extends Component {
   constructor(props) {
     super(props);
  
     this.state = { ...INITIAL_STATE };
   }
  
-  /**
-   *      *** USER AUTHENTICATION ***
-   * 
-   * Submit the forms. Sign the user in, clear the state 
-   * and redirect him to his Home Page.
-   */
   onSubmit = event => {
-    const { email, password } = this.state;
+    const { email } = this.state;
  
     this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
+      .doPasswordReset(email)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
       })
       .catch(error => {
         this.setState({ error });
@@ -110,17 +91,15 @@ class SignIn extends Component {
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-
+ 
   render() {
     const { 
       email, 
-      password, 
       error } = this.state;
  
     const isInvalid = 
-      password === '' || 
       email === '';
-
+ 
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -140,29 +119,11 @@ class SignIn extends Component {
               id="email"
               label="Email Address"
               name="email"
-              value={email}
+              value={this.state.email}
               onChange={this.onChange}
               placeholder="Email Address"
               autoComplete="email"
               autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              value={password}
-              onChange={this.onChange}
-              placeholder="Password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               disabled={isInvalid}
@@ -172,7 +133,7 @@ class SignIn extends Component {
               color="primary"
               className={this.props.classes.submit}
             >
-              Sign In
+              Reset my Password
             </Button>
             {error && <p>{error.message}</p>}
             <Grid container>
@@ -198,25 +159,24 @@ class SignIn extends Component {
 
 
 /**
- *    *** SIGN IN PAGE ***
- * Render the Sign In Class with custom styles.
+ *    *** PASSWORD FORGET PAGE ***
+ * Render the Password Forget Class with custom styles.
  */
-export default function SignInPage() {
+export default function PasswordForgetPage() {
   const classes = useStyles();
-
-  return (
-    <SignInBase classes={classes}/>
-  );
 }
+return (
+  <PasswordForgetBase classes={classes}/>
+);
 
-
-/**
- * Since the higher-order components don't depend on each other, the order doesn't matter. 
- * The compose function applies the higher-order components from right to left.
- */
-const SignInBase = compose(
-  withRouter,
-  withFirebase,
-)(SignIn);
+const PasswordForgetLink = () => (
+  <p>
+    <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
+  </p>
+);
  
-export { SignInBase };
+export default PasswordForgetPage;
+ 
+const PasswordForgetBase = withFirebase(PasswordForget);
+ 
+export { PasswordForgetForm, PasswordForgetLink };
