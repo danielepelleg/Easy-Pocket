@@ -177,7 +177,10 @@ class SignIn extends Component {
             {error && <p>{error.message}</p>}
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link 
+                  href="#"
+                  variant="body2"
+                  onClick={this.props.handleFlip}>
                   Forgot password?
                 </Link>
               </Grid>
@@ -201,11 +204,11 @@ class SignIn extends Component {
  *    *** SIGN IN PAGE ***
  * Render the Sign In Class with custom styles.
  */
-export default function SignInPage() {
+export default function SignInPage(props) {
   const classes = useStyles();
 
   return (
-    <SignInBase classes={classes}/>
+    <SignInBase {...props} classes={classes}/>
   );
 }
 

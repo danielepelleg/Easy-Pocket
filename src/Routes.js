@@ -11,7 +11,8 @@ import {
   Home,
   SignIn,
   SignUp,
-  Main
+  Main,
+  Login,
 } from './components'
 
 /**
@@ -58,7 +59,7 @@ const RoutesNonAuth = () => (
         exact path={ROUTES.SIGN_UP} component={SignUp} layout={MinimalLayout}
       />
       <RouteWithLayout
-        exact path={ROUTES.SIGN_IN} component={SignIn} layout={MinimalLayout}
+        exact path={ROUTES.SIGN_IN} component={Login} layout={MinimalLayout}
       />
     </Switch>
 );

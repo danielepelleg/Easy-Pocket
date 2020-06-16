@@ -1,25 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 /// Components
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+
+/// Styles
+import { makeStyles } from "@material-ui/core/styles";
 
 /// React Router
-import { Link } from 'react-router-dom';
-import * as ROUTES from '../../constants/routes';
+import { Link } from "react-router-dom";
+import * as ROUTES from "../../constants/routes";
 
 /// Firebase
-import { withFirebase } from '../Firebase';
-
+import { withFirebase } from "../Firebase";
 
 /**
  *    *** FORM STYLES ***
@@ -27,9 +29,9 @@ import { withFirebase } from '../Firebase';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(10),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, .75)",
     borderRadius: "12px",
     paddingTop: "15px",
@@ -43,63 +45,59 @@ const useStyles = makeStyles((theme) => ({
   },
 
   form: {
-    width: '90%', // Fix IE 11 issue.
+    width: "90%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  
+
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
 }));
- 
 
 /**
  *  *** INITIAL STATE ***
  * Used to reset the Login state once the User signs-in.
  */
 const INITIAL_STATE = {
-  email: '',
+  email: "",
   error: null,
 };
- 
+
 class PasswordForget extends Component {
   constructor(props) {
     super(props);
- 
+
     this.state = { ...INITIAL_STATE };
   }
- 
-  onSubmit = event => {
+
+  onSubmit = (event) => {
     const { email } = this.state;
- 
+
     this.props.firebase
       .doPasswordReset(email)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
- 
+
     event.preventDefault();
   };
- 
+
   /**
    *      *** ON CHANGE METHOD ***
    * Change the State on form's update.
    */
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
- 
+
   render() {
-    const { 
-      email, 
-      error } = this.state;
- 
-    const isInvalid = 
-      email === '';
- 
+    const { email, error } = this.state;
+
+    const isInvalid = email === "";
+
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -138,45 +136,40 @@ class PasswordForget extends Component {
             {error && <p>{error.message}</p>}
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link href="#" variant="body2" onClick={this.props.handleFlip}>
+                  Already have an account? Sign In
                 </Link>
               </Grid>
               <Grid item>
-                <Link to = {ROUTES.SIGN_UP} >
+                <Link to={ROUTES.SIGN_UP}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </form>
         </div>
-        <Box mt={8}>
-        </Box>
+        <Box mt={8}></Box>
       </Container>
     );
   }
 }
 
-
 /**
  *    *** PASSWORD FORGET PAGE ***
  * Render the Password Forget Class with custom styles.
  */
-export default function PasswordForgetPage() {
+export default function PasswordForgetPage(props) {
   const classes = useStyles();
+
+  return <PasswordForgetBase {...props} classes={classes} />;
 }
-return (
-  <PasswordForgetBase classes={classes}/>
-);
 
 const PasswordForgetLink = () => (
   <p>
     <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
   </p>
 );
- 
-export default PasswordForgetPage;
- 
+
 const PasswordForgetBase = withFirebase(PasswordForget);
- 
-export { PasswordForgetForm, PasswordForgetLink };
+
+export { PasswordForgetLink };
