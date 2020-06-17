@@ -65,12 +65,22 @@ class Firebase {
 
 
 
-  //*** User API ***
+  //  *** User API ***
+
+  /**
+   * Get a reference to a user by identifier
+   * @param {the identifier} uid 
+   */
   user = uid => this.db.ref('Users/${uid}');
 
   users = () => this.db.ref('Users');
 
-  //***Cards API ***
+  //  ***Cards API ***
+
+  /**
+   * Get a reference to a card by identifier
+   * @param {the identifier} uid 
+   */
   cards = uid => this.db.ref('Cards')
 }
  
