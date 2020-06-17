@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 2px 3px 0 rgba(255, 255, 255, .4)",
     borderRadius: 12,
     width: "70%",
-    height: "50%",
+    height: "40%",
     padding: "0 30px 30px",
     textAlign: "center",
     color: "white",
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center",
     background: "linear-gradient(45deg, #ff8e53 30%, #ffb00d 90%)",
     backgroundColor: "#FFB00D",
-    marginTop: 30,
+    marginTop: theme.spacing(5),
   },
 }));
 
