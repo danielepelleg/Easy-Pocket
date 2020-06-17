@@ -129,7 +129,7 @@ class SignIn extends Component {
           <Avatar className={this.props.classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1-2" variant="h5">
             Sign In
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.onSubmit}>
@@ -208,7 +208,7 @@ class SignIn extends Component {
 
 const condition = authUser => !(!!authUser);
 
- function SignInPage(props) {
+function SignInPage(props) {
   const classes = useStyles();
 
   return (
