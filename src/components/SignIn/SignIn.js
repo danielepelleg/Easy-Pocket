@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { withAuthorization } from '../../components/Session';
 
 /// Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -204,14 +205,17 @@ class SignIn extends Component {
  *    *** SIGN IN PAGE ***
  * Render the Sign In Class with custom styles.
  */
-export default function SignInPage(props) {
+
+const condition = authUser => !(!!authUser);
+
+ function SignInPage(props) {
   const classes = useStyles();
 
   return (
     <SignInBase {...props} classes={classes}/>
   );
 }
-
+export default withAuthorization(condition)(SignInPage);
 
 /**
  * Since the higher-order components don't depend on each other, the order doesn't matter. 

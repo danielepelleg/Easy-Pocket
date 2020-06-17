@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 /// Styles
 import "App.css";
 import { makeStyles } from "@material-ui/core/styles";
+import * as firebase from "firebase";
 
 /**
  *    *** FORM STYLES ***
@@ -67,6 +68,11 @@ const useStyles = makeStyles((theme) => ({
  * Render the Main Page with custom styles.
  */
 const Main = () => {
+  let redirect = null;
+  if(!!firebase.authUser)
+    redirect = ROUTES.SIGN_IN;
+  else
+    redirect = ROUTES.HOME;
   const classes = useStyles();
 
   return (
@@ -81,7 +87,7 @@ const Main = () => {
                 Registra le spese che fai, alla gestione ci pensa lui.
               </h3>
             </div>
-            <Link to={ROUTES.SIGN_IN}>
+            <Link to={redirect}>
               <Button variant="contained" className={classes.startButton}>
                 Get Started
               </Button>
