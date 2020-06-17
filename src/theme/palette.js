@@ -7,7 +7,7 @@ const red = "#E8310C";
 const fireRed = "#FF0500";
 const pink = "#F50069";
 const orange = "#FF5000";
-const yellow = "#F57000";
+const yellow = "#FFE781";
 
 export default {
   black,
