@@ -14,11 +14,13 @@ import Routes from "./Routes";
 /**
  *  *** Session Handling Imports ***
  * Use the new context to provide the authenticated user to components that are interested in it.
- * 
- * withAuthentication now passes the authenticated user implicitly via React's Context, 
+ *
+ * withAuthentication now passes the authenticated user implicitly via React's Context,
  * rather than explicitly through the component tree using props.
  */
 import { withAuthentication } from "components/Session";
+
+import {AuthUserContext} from './components/Session'
 
 const browserHistory = createBrowserHistory();
 

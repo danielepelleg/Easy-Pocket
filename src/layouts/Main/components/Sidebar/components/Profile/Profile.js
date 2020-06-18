@@ -1,9 +1,11 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, {useContext} from 'react';
+import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import { Avatar, Typography } from '@material-ui/core';
+import {makeStyles} from '@material-ui/styles';
+import {Avatar, Typography} from '@material-ui/core';
+import { AuthUserContext } from 'components/Session';
+import { FirebaseContext } from 'components/Firebase';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,27 +23,44 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+class user {
+  constructor() {
+  }
+
+}
+
 const Profile = props => {
-  const { className, ...rest } = props;
+  const {className, ...rest} = props;
 
   const classes = useStyles();
 
-  const user = {
+  var name;
+  const firebase = useContext(FirebaseContext);
+  const authUser = useContext(AuthUserContext);
+  firebase.user(authUser.uid).once('value').then(function (snapshot) {
+    name = (snapshot.val() && snapshot.val().name) || 'Anonymous';
+    console.log(name);
+    var surname = (snapshot.val() && snapshot.val().surname) || 'Anonyumus';
+  });
+  console.log(name);
+  const avatar = '/images/avatars/avatar_11.png';
+  /*const user = {
     name: 'Shen Zhi',
     avatar: '/images/avatars/avatar_11.png',
     bio: 'Brain Director'
-  };
+  };*/
 
   return (
     <div
       {...rest}
       className={clsx(classes.root, className)}
     >
+
       <Avatar
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        src={user.avatar}
+        src={avatar}
         to="/settings"
       />
       <Typography
