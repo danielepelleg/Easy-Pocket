@@ -1,12 +1,10 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 /// Components
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -18,11 +16,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 /// React Router
 import { Link, withRouter } from "react-router-dom";
-import * as ROUTES from '../../constants/routes';
+import * as ROUTES from "../../constants/routes";
 
 /// Firebase
-import { withFirebase } from '../Firebase';
-import { compose } from 'recompose';
+import { withFirebase } from "../Firebase";
+import { compose } from "recompose";
 
 /**
  *    *** FORM STYLES ***
@@ -53,27 +51,25 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-
 }));
-
 
 /**
  *  *** INITIAL STATE ***
  * Used to reset the Login state once the User signs-in.
  */
 const INITIAL_STATE = {
-  email: '',
-  passwordOne: '',
-  passwordTwo: '',
+  name: "",
+  surname: "",
+  email: "",
+  passwordOne: "",
+  passwordTwo: "",
   error: null,
 };
-
 
 /**
  * SIGN UP CLASS
  */
 class SignUp extends Component {
-
   /**
    * Class Constructor
    */
@@ -85,23 +81,33 @@ class SignUp extends Component {
 
   /**
    *      *** USER REGISTRATION ***
-   * 
-   * Submit the forms. Sign the user up, clear the state 
+   *
+   * Submit the forms. Sign the user up, clear the state
    * and redirect him to his Home Page.
    */
   onSubmit = (event) => {
-    const {email, passwordOne } = this.state;
- 
+    const { name, surname, email, passwordOne } = this.state;
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
+        // Create a user in your Firebase realtime database
+        return this.props.firebase
+          .user(authUser.user.uid)
+          .set({
+            name,
+            surname,
+            email,
+          });
+      })
+      .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
- 
+
     event.preventDefault();
   };
 
@@ -115,6 +121,8 @@ class SignUp extends Component {
 
   render() {
     const {
+      name,
+      surname,
       email,
       passwordOne,
       passwordTwo,
@@ -122,9 +130,11 @@ class SignUp extends Component {
     } = this.state;
 
     const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email === '';
+      passwordOne !== passwordTwo || 
+      passwordOne === "" ||
+      name === "" ||
+      surname === "" ||
+      email === "";
 
     return (
       <Container component="main" maxWidth="xs">
@@ -133,11 +143,39 @@ class SignUp extends Component {
           <Avatar className={this.props.classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1-2" variant="h5">
             Sign up
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.onSubmit}>
             <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  name="name"
+                  value={name}
+                  onChange={this.onChange}
+                  placeholder="Name"
+                  autoComplete="name"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="surname"
+                  label="Surname"
+                  name="surname"
+                  value={surname}
+                  onChange={this.onChange}
+                  placeholder="Surname"
+                  autoComplete="surname"
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -182,14 +220,6 @@ class SignUp extends Component {
                   autoComplete="current-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               disabled={isInvalid}
@@ -204,7 +234,7 @@ class SignUp extends Component {
             {error && <p>{error.message}</p>}
             <Grid container justify="flex-end">
               <Grid item>
-                <Link to = {ROUTES.SIGN_IN} >
+                <Link to={ROUTES.SIGN_IN}>
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -217,7 +247,6 @@ class SignUp extends Component {
   }
 }
 
-
 /**
  *    *** SIGN UP PAGE ***
  * Render the Sign Up Class with custom styles.
@@ -225,18 +254,13 @@ class SignUp extends Component {
 export default function SignUpPage() {
   const classes = useStyles();
 
-  return (
-    <SignUpBase classes={classes}/>
-  );
+  return <SignUpBase classes={classes} />;
 }
 
 /**
- * Since the higher-order components don't depend on each other, the order doesn't matter. 
+ * Since the higher-order components don't depend on each other, the order doesn't matter.
  * The compose function applies the higher-order components from right to left.
  */
-const SignUpBase = compose(
-  withRouter,
-  withFirebase,
-)(SignUp);
+const SignUpBase = compose(withRouter, withFirebase)(SignUp);
 
-export {SignUpBase};
+export { SignUpBase };
