@@ -2,7 +2,6 @@ import React from "react";
 
 /// Components
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Logo from "../../resources/hand.svg";
 
@@ -20,24 +19,20 @@ import * as firebase from "firebase";
  */
 const useStyles = makeStyles((theme) => ({
   textBox: {
-    display: "flex",
-    justifyContent: "center",
     flexDirection: "column",
-    //background: "linear-gradient(45deg, #ff5900 20%, #FF8E53 90%)",
     backgroundColor: "rgba(232, 49, 12, .75)",
     boxShadow: "0 2px 3px 0 rgba(255, 255, 255, .4)",
     borderRadius: 12,
     width: "70%",
-    height: "40%",
     padding: "0 30px 30px",
-    textAlign: "center",
     color: "white",
+    justifyContent: "center",
   },
 
   logoBox: {
-    display: "flex",
     justifyContent: "center",
     flexDirection: "column",
+    alignItems: "center",
     height: "90vh",
   },
 
@@ -46,19 +41,21 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
   },
 
-  container: {},
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
   startButton: {
     border: 0,
     borderRadius: 12,
     boxShadow: "0 1px 1px 1px rgba(255, 255, 255, .4)",
     color: "white",
-    height: 40,
-    width: 170,
+    height: "40px",
+    width: "32%",
     padding: "0 30px",
-    alignSelf: "center",
     background: "linear-gradient(45deg, #ff8e53 30%, #ffb00d 90%)",
-    backgroundColor: "#FFB00D",
     marginTop: theme.spacing(5),
   },
 }));
@@ -69,17 +66,15 @@ const useStyles = makeStyles((theme) => ({
  */
 const Main = () => {
   let redirect = null;
-  if(!!firebase.authUser)
-    redirect = ROUTES.SIGN_IN;
-  else
-    redirect = ROUTES.HOME;
+  if (!!firebase.authUser) redirect = ROUTES.SIGN_IN;
+  else redirect = ROUTES.HOME;
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Grid container className={classes.container}>
-        <Grid container xs={6} justify="center" alignItems="center">
-          <Box container className={classes.textBox}>
+      <Grid container>
+        <Grid item xs={6} className={classes.container}>
+          <Grid container className={classes.textBox}>
             <h1>Pocket Money</h1>
             <div>
               <h3>
@@ -92,12 +87,12 @@ const Main = () => {
                 Get Started
               </Button>
             </Link>
-          </Box>
+          </Grid>
         </Grid>
-        <Grid container xs={6} justify="center" alignItems="center">
-          <Box component="span" className={classes.logoBox}>
+        <Grid item xs={6} className={classes.container}>
+          <Grid container className={classes.logoBox}>
             <img src={Logo} className={classes.logo} alt="Logo" />
-          </Box>
+          </Grid>
         </Grid>
       </Grid>
     </div>
