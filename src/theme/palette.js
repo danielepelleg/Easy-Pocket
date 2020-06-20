@@ -14,9 +14,9 @@ export default {
   white,
   default: {
     light: yellow,
-    2: orange,
+    orange: orange,
     main: red,
-    3: fireRed,
+    red: fireRed,
     dark: pink,
   },
   primary: {
