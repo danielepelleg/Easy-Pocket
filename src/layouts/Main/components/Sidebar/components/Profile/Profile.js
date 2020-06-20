@@ -1,11 +1,14 @@
-import React, {useContext} from 'react';
+import React, {Component, useContext} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Avatar, Typography} from '@material-ui/core';
-import { AuthUserContext } from 'components/Session';
-import { FirebaseContext } from 'components/Firebase';
+import {withFirebase} from 'components/Firebase';
+import {withAuthorization} from 'components/Session';
+import {compose} from "recompose";
+
+//const authUser = useContext(AuthUserContext);
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,59 +26,82 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-class user {
-  constructor() {
+class Profile extends Component {
+
+  constructor(props) {
+    super(props);
+    const uid = this.props.authUser.uid;
+    this.state = uid;
+    this.state = {user: null};
   }
 
+  componentDidMount() {
+    this.props.firebase.user(this.state.uid).on('value', snapshot => {
+      const userObject = snapshot.val();
+      console.log(userObject);
+
+      const user = Object.keys(userObject);
+
+      console.log('first user :' + user);
+
+      this.setState({user: user});
+
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.user(this.state.uid).off();
+  }
+
+
+  render() {
+    console.log('test');
+    const avatar = '/images/avatars/avatar_11.png';
+    /*const user = {
+      name: 'Shen Zhi',
+      avatar: '/images/avatars/avatar_11.png',
+      bio: 'Brain Director'
+    };*/
+    const {...rest} = this.props;
+    const {user} = this.state;
+    console.log('second user: ' + user);
+    return (
+      <div
+        {...rest}
+        className={clsx(this.props.classes.root, this.props.className)}
+      >
+
+        <Avatar
+          alt="Person"
+          className={this.props.classes.avatar}
+          component={RouterLink}
+          src={avatar}
+          to="/settings"
+        />
+        <Typography
+          className={this.props.classes.name}
+          variant="h4"
+        >
+          {user.name}
+        </Typography>
+        {/*<Typography variant="body2">{user.bio}</Typography>*/}
+      </div>
+    );
+  }
 }
 
-const Profile = props => {
-  const {className, ...rest} = props;
+export default ProfilePage
 
+function ProfilePage(props) {
   const classes = useStyles();
-
-  var name;
-  const firebase = useContext(FirebaseContext);
-  const authUser = useContext(AuthUserContext);
-  firebase.user(authUser.uid).once('value').then(function (snapshot) {
-    name = (snapshot.val() && snapshot.val().name) || 'Anonymous';
-    console.log(name);
-    var surname = (snapshot.val() && snapshot.val().surname) || 'Anonyumus';
-  });
-  console.log(name);
-  const avatar = '/images/avatars/avatar_11.png';
-  /*const user = {
-    name: 'Shen Zhi',
-    avatar: '/images/avatars/avatar_11.png',
-    bio: 'Brain Director'
-  };*/
-
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <ProfileBase {...props} classes={classes}/>
+    );
+}
 
-      <Avatar
-        alt="Person"
-        className={classes.avatar}
-        component={RouterLink}
-        src={avatar}
-        to="/settings"
-      />
-      <Typography
-        className={classes.name}
-        variant="h4"
-      >
-        {user.name}
-      </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
-    </div>
-  );
-};
+const ProfileBase = compose(
+  withFirebase,
+  withAuthorization,
+)(Profile);
 
-Profile.propTypes = {
-  className: PropTypes.string
-};
-
-export default Profile;
+export { ProfileBase };
