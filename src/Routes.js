@@ -10,7 +10,6 @@ import {
   SignUp,
   Main,
   Login,
-  Account
 } from './components'
 
 
@@ -37,10 +36,6 @@ const Routes = () => (
       <RouteWithLayout
         exact path={ROUTES.SIGN_IN} component={Login} layout={MinimalLayout}
       />
-      <RouteWithLayout
-        exact path={ROUTES.ACCOUNT} component={Account} layout={MinimalLayout}
-      />
-
 
     </Switch>
 );

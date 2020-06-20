@@ -20,8 +20,6 @@ import Routes from "./Routes";
  */
 import { withAuthentication } from "components/Session";
 
-import {AuthUserContext} from './components/Session'
-
 const browserHistory = createBrowserHistory();
 
 Chart.helpers.extend(Chart.elements.Rectangle.prototype, {

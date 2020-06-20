@@ -1,4 +1,4 @@
-import * as app from 'firebase/app';
+import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
@@ -30,7 +30,7 @@ class Firebase {
    * *** SIGN UP ***
    */
   doCreateUserWithEmailAndPassword = (email, password) =>
-  this.auth.createUserWithEmailAndPassword(email, password);
+    this.auth.createUserWithEmailAndPassword(email, password);
 
   /** 
    * *** SIGN IN ***

@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import { withAuthorization } from '../../components/Session';
 
-
-/* {
-import {
+/*import {
+    
     Budget,
     TotalUsers,
     TasksProgress,
@@ -13,7 +12,7 @@ import {
     UsersByDevice,
     LatestProducts,
     LatestOrders
-} from './HomeComponents'; } */
+} from './HomeComponents';*/
 
 const useStyles = makeStyles(theme => ({
     root: {
