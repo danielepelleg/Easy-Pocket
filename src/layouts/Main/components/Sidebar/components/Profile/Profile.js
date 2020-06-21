@@ -1,107 +1,104 @@
-import React, {Component, useContext} from 'react';
-import {Link as RouterLink} from 'react-router-dom';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/styles';
-import {Avatar, Typography} from '@material-ui/core';
-import {withFirebase} from 'components/Firebase';
-import {withAuthorization} from 'components/Session';
-import {compose} from "recompose";
+import React, { Component } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import { Avatar, Typography } from "@material-ui/core";
+import { withFirebase } from "components/Firebase";
 
-//const authUser = useContext(AuthUserContext);
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    minHeight: 'fit-content'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    minHeight: "fit-content",
   },
   avatar: {
     width: 60,
-    height: 60
+    height: 60,
   },
   name: {
-    marginTop: theme.spacing(1)
-  }
+    marginTop: theme.spacing(1),
+  },
 }));
 
 class Profile extends Component {
-
   constructor(props) {
     super(props);
-    const uid = this.props.authUser.uid;
-    this.state = uid;
-    this.state = {user: null};
+
+    this.state = {
+      loading: false,
+      name: "",
+      surname: "",
+    };
   }
 
+  /**
+   * Load User Data
+   */
   componentDidMount() {
-    this.props.firebase.user(this.state.uid).on('value', snapshot => {
-      const userObject = snapshot.val();
-      console.log(userObject);
+    let currentComponent = this;
+    this.setState({ loading: true });
 
-      const user = Object.keys(userObject);
+    this.props.firebase
+      .authUser()
+      .once("value")
+      .then((snapshot) => {
 
-      console.log('first user :' + user);
-
-      this.setState({user: user});
-
-    });
+        if (snapshot.val() !== null) {
+          currentComponent.setState({
+            name: snapshot.val().name,
+            surname: snapshot.val().surname,
+          });
+        }
+      })
+      .catch(console.error);
   }
 
   componentWillUnmount() {
-    this.props.firebase.user(this.state.uid).off();
+    this.props.firebase.authUser().off();
   }
 
-
   render() {
-    console.log('test');
-    const avatar = '/images/avatars/avatar_11.png';
-    /*const user = {
-      name: 'Shen Zhi',
-      avatar: '/images/avatars/avatar_11.png',
-      bio: 'Brain Director'
-    };*/
-    const {...rest} = this.props;
-    const {user} = this.state;
-    console.log('second user: ' + user);
+    const user = {
+      name: "Shen Zhi",
+      avatar: "/images/avatars/avatar_11.png",
+      bio: "User",
+    };
+
     return (
       <div
-        {...rest}
+        {...this.props.rest}
         className={clsx(this.props.classes.root, this.props.className)}
       >
-
         <Avatar
           alt="Person"
           className={this.props.classes.avatar}
           component={RouterLink}
-          src={avatar}
+          src={user.avatar}
           to="/settings"
         />
-        <Typography
-          className={this.props.classes.name}
-          variant="h4"
-        >
-          {user.name}
+        <Typography className={this.props.classes.name} variant="h4">
+          {this.state.name}
         </Typography>
-        {/*<Typography variant="body2">{user.bio}</Typography>*/}
+        <Typography variant="body2">{user.bio}</Typography>
       </div>
     );
   }
 }
 
-export default ProfilePage
+Profile.propTypes = {
+  className: PropTypes.string,
+};
 
-function ProfilePage(props) {
+/**
+ *    *** PROFILE UP PAGE ***
+ * Render the Profile Class with custom styles.
+ */
+export function ProfilePage(props) {
   const classes = useStyles();
-  return (
-    <ProfileBase {...props} classes={classes}/>
-    );
+
+  return <Profile {...props} classes={classes} />;
 }
 
-const ProfileBase = compose(
-  withFirebase,
-  withAuthorization,
-)(Profile);
-
-export { ProfileBase };
+export default withFirebase(ProfilePage);

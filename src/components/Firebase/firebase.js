@@ -72,6 +72,8 @@ class Firebase {
    * @param {the identifier} uid 
    */
   user = uid => this.db.ref(`users/${uid}`);
+
+  authUser = () => this.db.ref('/users/' + this.auth.currentUser.uid);
  
   users = () => this.db.ref('users');
 
