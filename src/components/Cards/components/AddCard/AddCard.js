@@ -10,7 +10,7 @@ import {
   Button,
   CardHeader,
   Grid,
-  TextField
+  TextField,
 } from "@material-ui/core";
 
 /// Firebase
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  *  *** INITIAL STATE ***
- * Used to reset the Login state once the User signs-in.
+ * Used to reset the Card state once the User register a new card.
  */
 const INITIAL_STATE = {
   name: "",
@@ -84,7 +84,6 @@ class AddCard extends Component {
   };
 
   render() {
-
     const { name, owner, money, color, error } = this.state;
 
     const isInvalid = name === "" || owner === "" || money === "";
@@ -109,7 +108,10 @@ class AddCard extends Component {
     ];
 
     return (
-      <Card {... this.props.rest} className={clsx(this.props.classes.root, this.props.className)}>
+      <Card
+        {...this.props.rest}
+        className={clsx(this.props.classes.root, this.props.className)}
+      >
         <form autoComplete="off" noValidate onSubmit={this.onSubmit}>
           <CardHeader title="Add a New Card" subheader="Card Informations:" />
           <Divider />
@@ -132,7 +134,6 @@ class AddCard extends Component {
                 />
               </Grid>
 
-
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
@@ -142,11 +143,9 @@ class AddCard extends Component {
                   onChange={this.onChange}
                   required
                   value={owner}
-                  helperText="Please specify the money you can spend"
                   variant="outlined"
                 />
               </Grid>
-
 
               <Grid item md={6} xs={12}>
                 <TextField
@@ -157,10 +156,10 @@ class AddCard extends Component {
                   onChange={this.onChange}
                   type="number"
                   value={money}
+                  helperText="Please specify the money you can spend"
                   variant="outlined"
                 />
               </Grid>
-
 
               <Grid item md={6} xs={12}>
                 <TextField
@@ -181,17 +180,15 @@ class AddCard extends Component {
                     </option>
                   ))}
                 </TextField>
+
               </Grid>
-
-
             </Grid>
           </CardContent>
           <Divider />
           <CardActions>
-
-
             <Button
               disabled={isInvalid}
+              type="submit"
               className={this.props.classes.uploadButton}
               color="primary"
               variant="contained"
@@ -219,10 +216,7 @@ export { AddCardBase };
  * Render the Add Card Form with custom styles.
  */
 export default function AddCardForm() {
-    const classes = useStyles();
-  
-    return <AddCardBase classes={classes} />;
+  const classes = useStyles();
+
+  return <AddCardBase classes={classes} />;
 }
-
-
-
