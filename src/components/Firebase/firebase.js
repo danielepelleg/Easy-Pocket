@@ -1,6 +1,6 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
+import app from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -10,7 +10,7 @@ const config = {
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
- 
+
 class Firebase {
   constructor() {
     app.initializeApp(config);
@@ -21,69 +21,85 @@ class Firebase {
 
   /**
    * *** Authentication API for Firebase Class ***
-   * 
+   *
    *    Autentication functions as class methods
    */
-  
-  
-  /** 
+
+  /**
    * *** SIGN UP ***
    */
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
-  /** 
+  /**
    * *** SIGN IN ***
-   * 
-   * It is not possible to sign in a user who is not signed up yet 
+   *
+   * It is not possible to sign in a user who is not signed up yet
    *  since the Firebase API would return an error
    */
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
-  
-  
 
   /**
    * *** SIGN OUT ***
-   * 
-   * Don't need to pass any argument to it, because Firebase knows 
-   * about the currently authenticated user. If no user is authenticated, 
+   *
+   * Don't need to pass any argument to it, because Firebase knows
+   * about the currently authenticated user. If no user is authenticated,
    * nothing will happen when this function is called.
    */
   doSignOut = () => this.auth.signOut();
 
-  /** 
+  /**
    * *** RESET PASSWORD ***
    */
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
- 
-  /** 
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+
+  /**
    * *** UPDATE PASSWORD ***
    */
-  doPasswordUpdate = password =>
+  doPasswordUpdate = (password) =>
     this.auth.currentUser.updatePassword(password);
 
-
+  /**
+   * *** CREATE A CARD ***
+   * 
+   * @param {*} name the name of the card in order to recognize it
+   * @param {*} owner the owner of the card 
+   * @param {*} money the money u can spend on it     
+   * @param {*} color the color u choose to save it
+   */
+  doCreateCard = (name, owner, money, color) => {
+    const newCard = this.db.ref("users/" + this.auth.currentUser.uid + "/cards").push();
+    console.log(newCard);
+    newCard.set({
+      name: name,
+      owner: owner,
+      money: money,
+      color: color
+    });
+  };
 
   //  *** User API ***
 
   /**
    * Get a reference to a user by identifier
-   * @param {the identifier} uid 
+   * @param {the identifier} uid
    */
-  user = uid => this.db.ref(`users/${uid}`);
+  user = (uid) => this.db.ref(`users/${uid}`);
 
-  authUser = () => this.db.ref('/users/' + this.auth.currentUser.uid);
- 
-  users = () => this.db.ref('users');
+  userCards = (uid) => this.db.ref(`users/${uid}/cards`);
+
+  authUser = () => this.db.ref("/users/" + this.auth.currentUser.uid);
+
+  users = () => this.db.ref("users");
 
   //  ***Cards API ***
 
   /**
    * Get a reference to a card by identifier
-   * @param {the identifier} uid 
+   * @param {the identifier} uid
    */
-  cards = uid => this.db.ref('Cards')
+  cards = (uid) => this.db.ref("Cards");
 }
- 
+
 export default Firebase;
