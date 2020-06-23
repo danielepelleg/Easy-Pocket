@@ -55,13 +55,8 @@ class Profile extends Component {
       .catch(console.error);
   }
 
-  componentWillUnmount() {
-    this.props.firebase.authUser().off();
-  }
-
   render() {
     const user = {
-      name: "Shen Zhi",
       avatar: "/images/avatars/avatar_11.png",
       bio: "User",
     };
