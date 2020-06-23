@@ -69,14 +69,34 @@ class Firebase {
    * @param {*} color the color u choose to save it
    */
   doCreateCard = (name, owner, money, color) => {
-    const newCard = this.db.ref("users/" + this.auth.currentUser.uid + "/cards").push();
-    console.log(newCard);
-    newCard.set({
+    // A card entry.
+    if (color === "")
+      color = "#FF0500";
+
+    var cardData = {
+      uid: this.auth.currentUser.uid,
       name: name,
       owner: owner,
       money: money,
       color: color
-    });
+    };
+
+    // Get a key for a new Card.
+    var newCardKey = this.db.ref().child('cards').push().key;
+
+    var keyData = {
+      cid: newCardKey
+    };
+
+    // Write the new card's data simultaneously in the cards list and the user's cards list.
+    //  In the second one will be written just the card identification number (Cid)
+    var userCard = {};
+    userCard['/cards/' + newCardKey] = cardData;
+    var newCard = {};
+    newCard['/users/' + this.auth.currentUser.uid + '/cards/'] = keyData;
+
+    this.db.ref().update(userCard);
+    this.db.ref().update(newCard);
   };
 
   //  *** User API ***
@@ -89,6 +109,8 @@ class Firebase {
 
   userCards = (uid) => this.db.ref(`users/${uid}/cards`);
 
+  authUserCards = () => this.db.ref("/users/" + this.auth.currentUser.uid + '/cards');
+
   authUser = () => this.db.ref("/users/" + this.auth.currentUser.uid);
 
   users = () => this.db.ref("users");
@@ -99,7 +121,7 @@ class Firebase {
    * Get a reference to a card by identifier
    * @param {the identifier} uid
    */
-  cards = (uid) => this.db.ref("Cards");
+  cards = (uid) => this.db.ref("cards");
 }
 
 export default Firebase;
