@@ -10,8 +10,8 @@ import {
   SignUp,
   Main,
   Login,
+  Cards,
 } from './components'
-
 
 
 const Routes = () => (
@@ -36,7 +36,9 @@ const Routes = () => (
       <RouteWithLayout
         exact path={ROUTES.SIGN_IN} component={Login} layout={MinimalLayout}
       />
-
+      <RouteWithLayout
+        exact path={ROUTES.CARDS} component={Cards} layout={MainLayout}
+      />
     </Switch>
 );
 export default Routes
