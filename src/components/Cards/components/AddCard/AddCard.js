@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import {
   Card,
   CardActions,
@@ -14,7 +14,10 @@ import {
 } from "@material-ui/core";
 
 /// Firebase
-import { withFirebase } from "components/Firebase";
+import {withFirebase} from "components/Firebase";
+import {withAuthentication} from 'components/Session'
+import {compose} from "recompose";
+import {card} from "../../../../constants/dbStructure";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -55,7 +58,7 @@ class AddCard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { ...INITIAL_STATE };
+    this.state = {...INITIAL_STATE};
   }
 
   /**
@@ -64,13 +67,35 @@ class AddCard extends Component {
    * Submit the forms. Register a new User's Card.
    */
   onSubmit = (event) => {
-    const { name, owner, money, color } = this.state;
+    const {name, owner, money, color} = this.state;
 
-    this.props.firebase
-      .doCreateCard(name, owner, money, color)
-      .catch((error) => {
-        this.setState({ error });
-      });
+    const cardsRef = this.props.firebase.cards();
+    const uid = this.props.firebase.auth.currentUser.uid;
+    const userCardsListRef = this.props.firebase.userCards(uid);
+
+
+    let newCardRef = cardsRef.push();
+    //let newUserCardsListRef = userCardsListRef.push();
+    const newCardId = newCardRef.key;
+    newCardRef.set({
+      name: name,
+      owner: owner,
+      money: money,
+      color: color,
+      [uid]: true,
+    });
+    const newCard = {newCardId: true};
+
+
+    userCardsListRef.on("value", snapshot => {
+      const cardsList = snapshot.val();
+      if (cardsList) {
+        cardsList[newCardId] = true;
+        userCardsListRef.set(cardsList);
+      } else
+        userCardsListRef.set(newCard);
+    })
+
 
     event.preventDefault();
   };
@@ -80,11 +105,11 @@ class AddCard extends Component {
    * Change the State on form's update.
    */
   onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({[event.target.name]: event.target.value});
   };
 
   render() {
-    const { name, owner, money, color, error } = this.state;
+    const {name, owner, money, color, error} = this.state;
 
     const isInvalid = name === "" || owner === "" || money === "";
 
@@ -113,8 +138,8 @@ class AddCard extends Component {
         className={clsx(this.props.classes.root, this.props.className)}
       >
         <form autoComplete="off" noValidate onSubmit={this.onSubmit}>
-          <CardHeader title="Add a New Card" subheader="Card Informations:" />
-          <Divider />
+          <CardHeader title="Add a New Card" subheader="Card Informations:"/>
+          <Divider/>
           <CardContent>
             <Grid container spacing={3}>
 
@@ -170,7 +195,7 @@ class AddCard extends Component {
                   onChange={this.onChange}
                   required
                   select
-                  SelectProps={{ native: true }}
+                  SelectProps={{native: true}}
                   value={color}
                   variant="outlined"
                 >
@@ -184,7 +209,7 @@ class AddCard extends Component {
               </Grid>
             </Grid>
           </CardContent>
-          <Divider />
+          <Divider/>
           <CardActions>
             <Button
               disabled={isInvalid}
@@ -207,9 +232,9 @@ AddCard.propTypes = {
   className: PropTypes.string,
 };
 
-const AddCardBase = withFirebase(AddCard);
+const AddCardBase = compose(withFirebase, withAuthentication)(AddCard);
 
-export { AddCardBase };
+export {AddCardBase};
 
 /**
  *    *** ADD CARD FORM ***
@@ -218,5 +243,5 @@ export { AddCardBase };
 export default function AddCardForm() {
   const classes = useStyles();
 
-  return <AddCardBase classes={classes} />;
+  return <AddCardBase classes={classes}/>;
 }
