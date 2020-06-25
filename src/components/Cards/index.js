@@ -35,18 +35,18 @@ class Card extends Component {
           >
           <Grid
             item
-            lg={4}
+            lg={3}
             md={6}
-            xl={4}
+            xl={3}
             xs={12}
           >
             <AddCard />
           </Grid>
           <Grid
             item
-            lg={8}
+            lg={9}
             md={6}
-            xl={8}
+            xl={9}
             xs={12}
           >
             <CardDetails />
