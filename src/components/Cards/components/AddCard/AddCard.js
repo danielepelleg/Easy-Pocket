@@ -1,7 +1,7 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardActions,
@@ -12,12 +12,13 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
+import { TwitterPicker } from "react-color";
+import ColorLensIcon from "@material-ui/icons/ColorLens";
 
 /// Firebase
-import {withFirebase} from "components/Firebase";
-import {withAuthentication} from 'components/Session'
-import {compose} from "recompose";
-import {card} from "../../../../constants/dbStructure";
+import { withFirebase } from "components/Firebase";
+import { withAuthentication } from "components/Session";
+import { compose } from "recompose";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -47,8 +48,9 @@ const INITIAL_STATE = {
   name: "",
   owner: "",
   money: "",
-  color: "",
+  color: "#fff",
   error: null,
+  displayColorPicker: false,
 };
 
 class AddCard extends Component {
@@ -58,7 +60,7 @@ class AddCard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {...INITIAL_STATE};
+    this.state = { ...INITIAL_STATE };
   }
 
   /**
@@ -67,15 +69,15 @@ class AddCard extends Component {
    * Submit the forms. Register a new User's Card.
    */
   onSubmit = (event) => {
-    const {name, owner, money, color} = this.state;
+    const { name, owner, money, color } = this.state;
 
     const cardsRef = this.props.firebase.cards();
     const uid = this.props.firebase.auth.currentUser.uid;
     const userCardsListRef = this.props.firebase.userCards(uid);
 
-
     let newCardRef = cardsRef.push();
-    //let newUserCardsListRef = userCardsListRef.push();
+
+    // New Key ID for the Card
     const newCardId = newCardRef.key;
     newCardRef.set({
       name: name,
@@ -84,19 +86,18 @@ class AddCard extends Component {
       color: color,
       [uid]: true,
     });
-    const newCard = {newCardId: true};
+    const newCard = { newCardId: true };
 
-
-    userCardsListRef.on("value", snapshot => {
+    // Rewrite the cards list and add the new one
+    userCardsListRef.on("value", (snapshot) => {
       const cardsList = snapshot.val();
       if (cardsList) {
         cardsList[newCardId] = true;
         userCardsListRef.set(cardsList);
-      } else
-        userCardsListRef.set(newCard);
-    })
+      } else userCardsListRef.set(newCard);
+    });
 
-
+    this.setState({ ...INITIAL_STATE });
     event.preventDefault();
   };
 
@@ -105,61 +106,92 @@ class AddCard extends Component {
    * Change the State on form's update.
    */
   onChange = (event) => {
-    this.setState({[event.target.name]: event.target.value});
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  /**
+   * Display the ColorPicker on Click
+   */
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
+  };
+
+  /**
+   * Close the ColorPicker
+   */
+  handleClose = () => {
+    this.setState({ displayColorPicker: false });
+  };
+
+  /**
+   * Set the Color in the state once it has been chosen
+   * @param {color} color
+   */
+  handleChangeComplete = (color) => {
+    this.setState({ color: color.hex });
   };
 
   render() {
-    const {name, owner, money, color, error} = this.state;
+    const { name, owner, money, error } = this.state;
 
-    const isInvalid = name === "" || owner === "" || money === "";
+    const isInvalid = name === "" || owner === "" || money === "" || money < 0;
 
-    const colors = [
-      {
-        value: "#FF0500",
-        label: "Red",
-      },
-      {
-        value: "#FF5000",
-        label: "Orange",
-      },
-      {
-        value: "#F50069",
-        label: "Pink",
-      },
-      {
-        value: "#FFE781",
-        label: "Yellow",
-      },
-    ];
+    const popover = {
+      position: "absolute",
+      zIndex: "2",
+    };
+
+    const cover = {
+      position: "fixed",
+      top: "10px",
+      right: "10px",
+      bottom: "10px",
+      left: "10px",
+    };
 
     return (
       <Card
+        style={{ backgroundColor: this.state.color }}
         {...this.props.rest}
         className={clsx(this.props.classes.root, this.props.className)}
       >
         <form autoComplete="off" noValidate onSubmit={this.onSubmit}>
-          <CardHeader title="Add a New Card" subheader="Card Informations:"/>
-          <Divider/>
+          <CardHeader title="Add a New Card" />
+
+          <Divider />
+          <ColorLensIcon
+            className="palette-icon"
+            color="#eeeeee"
+            onClick={this.handleClick}
+          />
+          {this.state.displayColorPicker ? (
+            <div style={popover}>
+              <div style={cover} onClick={this.handleClose} />
+              <TwitterPicker
+                color={this.state.color}
+                onChangeComplete={this.handleChangeComplete}
+                triangle="hide"
+              />
+            </div>
+          ) : null}
+
           <CardContent>
-            <Grid container spacing={3}>
-
-
-              <Grid item md={6} xs={12}>
+            <Grid container spacing={1}>
+              <Grid item md={12} xs={12}>
                 <TextField
                   fullWidth
-                  helperText="Please specify the card name"
                   label="Card name"
                   margin="dense"
                   name="name"
                   onChange={this.onChange}
                   required
-                  value={name}
+                  value={this.state.name}
                   placeholder="Card name"
                   variant="outlined"
                 />
               </Grid>
 
-              <Grid item md={6} xs={12}>
+              <Grid item md={12} xs={12}>
                 <TextField
                   fullWidth
                   label="Owner"
@@ -167,12 +199,12 @@ class AddCard extends Component {
                   name="owner"
                   onChange={this.onChange}
                   required
-                  value={owner}
+                  value={this.state.owner}
                   variant="outlined"
                 />
               </Grid>
 
-              <Grid item md={6} xs={12}>
+              <Grid item md={12} xs={12}>
                 <TextField
                   fullWidth
                   label="Money"
@@ -180,36 +212,15 @@ class AddCard extends Component {
                   name="money"
                   onChange={this.onChange}
                   type="number"
-                  value={money}
-                  helperText="Please specify the money you can spend"
+                  value={this.state.money}
                   variant="outlined"
                 />
               </Grid>
-
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Select Color"
-                  margin="dense"
-                  name="color"
-                  onChange={this.onChange}
-                  required
-                  select
-                  SelectProps={{native: true}}
-                  value={color}
-                  variant="outlined"
-                >
-                  {colors.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-
-              </Grid>
             </Grid>
           </CardContent>
-          <Divider/>
+
+          <Divider />
+
           <CardActions>
             <Button
               disabled={isInvalid}
@@ -234,7 +245,7 @@ AddCard.propTypes = {
 
 const AddCardBase = compose(withFirebase, withAuthentication)(AddCard);
 
-export {AddCardBase};
+export { AddCardBase };
 
 /**
  *    *** ADD CARD FORM ***
@@ -243,5 +254,5 @@ export {AddCardBase};
 export default function AddCardForm() {
   const classes = useStyles();
 
-  return <AddCardBase classes={classes}/>;
+  return <AddCardBase classes={classes} />;
 }
