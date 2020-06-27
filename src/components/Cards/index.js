@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
-import { CardDetails, AddCard } from './components';
+import { CardList, AddCard } from './components';
 
 import { withFirebase } from 'components/Firebase'
 
@@ -49,7 +49,7 @@ class Card extends Component {
             xl={9}
             xs={12}
           >
-            <CardDetails />
+            <CardList />
           </Grid>
         </Grid>
       </div>
@@ -59,11 +59,11 @@ class Card extends Component {
 
 const ListBase = withFirebase(Card);
 
-export default function CardList(props) {
+export default function UserCards() {
   const classes = useStyles();
 
   return (
-    <ListBase {...props} classes={classes}/>
+    <ListBase classes={classes}/>
   );
 }
 
