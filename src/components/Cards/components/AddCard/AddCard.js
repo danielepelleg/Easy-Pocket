@@ -161,7 +161,6 @@ class AddCard extends Component {
           <Divider />
           <ColorLensIcon
             className="palette-icon"
-            color="#eeeeee"
             onClick={this.handleClick}
           />
           {this.state.displayColorPicker ? (

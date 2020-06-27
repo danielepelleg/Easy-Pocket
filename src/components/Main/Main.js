@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 /// Styles
 import "App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import * as firebase from "firebase";
+import firebase from "../Firebase";
 
 /**
  *    *** FORM STYLES ***

@@ -16,7 +16,7 @@ import { withAuthorization } from '../../components/Session';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        padding: theme.spacing
+        padding: theme.spacing(1)
     }
 }));
 
