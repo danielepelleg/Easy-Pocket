@@ -37,6 +37,7 @@ class CardBase extends Component {
     super(props);
 
     this.state = {
+      cid: "",
       name: "",
       owner: "",
       money: "",

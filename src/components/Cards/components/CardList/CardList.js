@@ -6,21 +6,21 @@ import CardItem from "../CardItem";
 
 const testCards = [
   {
-    ZeNAWTZVkwVyCGNTsGpp550vNt53: true,
+    cid: "ZeNAWTZVkwVyCGNTsGpp550vNt53",
     color: "#9addf4",
     money: "344",
     name: "fads",
     owner: "adsf",
   },
   {
-    ZeNAWTZVkwVyCGNTsGpp550vNt53: true,
+    cid: "ZeNAWTZVkwVyCGNTsGpp5bgfvd53",
     color: "#FF0080",
     money: "324",
     name: "sadf",
     owner: "adsf",
   },
   {
-    ZeNAWTZVkwVyCGNTsGpp550vNt53: true,
+    cid: "ZeNAWTZVkwVyCGNbtrefpp550vNt53",
     color: "#d1dd4a",
     money: "3243",
     name: "sadfdasf",
@@ -37,7 +37,7 @@ class CardList extends Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     console.log(this.state.cards);
     /*
     const uid = this.props.firebase.auth.currentUser.uid;
@@ -59,7 +59,7 @@ class CardList extends Component {
         <Container>
           <Grid container spacing={4}>
             {cards.map((_card) => {
-              return <CardItem card={_card}></CardItem>;
+              return <CardItem card={_card} key={_card.cid}></CardItem>;
             })}
           </Grid>
         </Container>
