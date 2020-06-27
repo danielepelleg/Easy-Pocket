@@ -4,7 +4,7 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Typography } from "@material-ui/core";
-import { withFirebase } from "components/Firebase";
+import { AuthUserContext, withAuthorization } from "components/Session";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,37 +23,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false,
-      name: "",
-      surname: "",
-    };
-  }
-
-  /**
-   * Load User Data
-   */
-  componentDidMount() {
-    let currentComponent = this;
-    this.setState({ loading: true });
-
-    this.props.firebase
-      .authUser()
-      .once("value")
-      .then((snapshot) => {
-
-        if (snapshot.val() !== null) {
-          currentComponent.setState({
-            name: snapshot.val().name,
-            surname: snapshot.val().surname,
-          });
-        }
-      })
-      .catch(console.error);
-  }
 
   render() {
     const user = {
@@ -62,22 +31,26 @@ class Profile extends Component {
     };
 
     return (
-      <div
-        {...this.props.rest}
-        className={clsx(this.props.classes.root, this.props.className)}
-      >
-        <Avatar
-          alt="Person"
-          className={this.props.classes.avatar}
-          component={RouterLink}
-          src={user.avatar}
-          to="/settings"
-        />
-        <Typography className={this.props.classes.name} variant="h4">
-          {this.state.name}
-        </Typography>
-        <Typography variant="body2">{user.bio}</Typography>
-      </div>
+      <AuthUserContext.Consumer>
+        {(authUser) => (
+          <div
+            {...this.props.rest}
+            className={clsx(this.props.classes.root, this.props.className)}
+          >
+            <Avatar
+              alt="Person"
+              className={this.props.classes.avatar}
+              component={RouterLink}
+              src={user.avatar}
+              to="/settings"
+            />
+            <Typography className={this.props.classes.name} variant="h4">
+              {authUser.name}
+            </Typography>
+            <Typography variant="body2">{user.bio}</Typography>
+          </div>
+        )}
+      </AuthUserContext.Consumer>
     );
   }
 }
@@ -96,4 +69,6 @@ export function ProfilePage(props) {
   return <Profile {...props} classes={classes} />;
 }
 
-export default withFirebase(ProfilePage);
+const condition = (authUser) => !!authUser;
+
+export default withAuthorization(condition)(ProfilePage);
