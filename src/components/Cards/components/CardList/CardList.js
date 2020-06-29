@@ -1,71 +1,60 @@
-import React, { Component } from "react";
-import { withFirebase } from "components/Firebase";
-import { Grid } from "@material-ui/core";
+import React, {Component} from "react";
+import {withFirebase} from "components/Firebase";
+import {withAuthentication} from "components/Session";
+import {Grid} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import CardItem from "../CardItem";
+import { withAuthorization } from 'components/Session';
+import {compose} from "recompose";
 
-const testCards = [
-  {
-    cid: "ZeNAWTZVkwVyCGNTsGpp550vNt53",
-    color: "#9addf4",
-    money: "344",
-    name: "fads",
-    owner: "adsf",
-  },
-  {
-    cid: "ZeNAWTZVkwVyCGNTsGpp5bgfvd53",
-    color: "#FF0080",
-    money: "324",
-    name: "sadf",
-    owner: "adsf",
-  },
-  {
-    cid: "ZeNAWTZVkwVyCGNbtrefpp550vNt53",
-    color: "#d1dd4a",
-    money: "3243",
-    name: "sadfdasf",
-    owner: "adsfafds",
-  },
-];
+const testCards = [{}]
 
 class CardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cards: testCards,
-      uid: "",
     };
   }
 
   componentDidMount = () => {
-    console.log(this.state.cards);
-    /*
-    const uid = this.props.firebase.auth.currentUser.uid;
-    const userCardsListRef = this.props.firebase.userCards(uid);
-
-    userCardsListRef
-    .on("value", (snapshot) => {
-      this.setState({ cards: snapshot.val() });
-      console.log(snapshot.val());
+    const currentComponent = this;
+    const refCardList = this.props.firebase.userCards(this.props.authUser.uid);
+    let cards = {};
+    refCardList.on('value', snapshot =>{
+      const cardsIds = snapshot.val()
+      for( let value in cardsIds){
+        currentComponent.props.firebase.card([value]).on('value', snapshot1 =>{
+          return <CardItem card = {snapshot1.val()} />
+        })
+      }
     });
-    console.log(this.state.cards);
-    */
-  };
-
-  render() {
-    const { cards } = this.state;
-    return (
-      <div>
-        <Container>
-          <Grid container spacing={4}>
-            {cards.map((_card) => {
-              return <CardItem card={_card} key={_card.cid}></CardItem>;
-            })}
-          </Grid>
-        </Container>
-      </div>
-    );
-  }
+this.setState(cards);
 }
 
-export default withFirebase(CardList);
+render()
+{
+  const {cards} = this.state;
+  return (
+    <div>
+      <Container>
+        <Grid container spacing={4}>
+          {
+            cards.map(
+              (value) => {
+                return <CardItem card={value}> </CardItem>;
+              })
+          }
+        </Grid>
+      </Container>
+    </div>
+  );
+}
+}
+
+const CardListBase = compose(
+  withFirebase,
+    withAuthorization
+)(CardList)
+
+export default withFirebase(CardListBase);

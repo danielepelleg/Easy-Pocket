@@ -94,7 +94,8 @@ class AddCard extends Component {
       if (cardsList) {
         cardsList[newCardId] = true;
         userCardsListRef.set(cardsList);
-      } else userCardsListRef.set(newCard);
+      } else
+        userCardsListRef.set(newCard);
     });
 
     this.setState({ ...INITIAL_STATE });
