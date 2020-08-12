@@ -17,13 +17,70 @@ class Card extends Component {
     super(props);
  
     this.state = {
+      cidList: [],
+      cards: [],
     };
   }
- 
-  componentDidMount() {
-  }
+  
+  componentWillMount() {
+    const currentComponent = this;
+    let cardsIds = [];
+    currentComponent.props.firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        const uid = currentComponent.props.firebase.auth.currentUser.uid;
+        const refCardList = currentComponent.props.firebase.userCards(uid);
 
-  componentWillUnmount() {
+        refCardList.once("value").then(function (snapshot) {
+          cardsIds = snapshot.val();
+          let cardsList = [];
+          for (let element in cardsIds) {
+            currentComponent.props.firebase
+              .card(element)
+              .once("value").then(function (snapshot1) {
+                if(snapshot1.val() !== null){
+                let newCard = {
+                  cid: element,
+                  name: snapshot1.val().name,
+                  owner: snapshot1.val().owner,
+                  money: snapshot1.val().money,
+                  color: snapshot1.val().color,
+                };
+                cardsList.push(newCard);
+                currentComponent.setState({ cards: cardsList });
+              }
+              });
+          }
+        });
+      } else {
+        // No user is signed in.
+      }
+    });
+  };
+
+  deleteCard = async key => {
+    this.props.firebase
+      .card(key)
+      .remove()
+      .then(function () {
+        console.log("Card ID: " + key + " deleted from cards");
+      })
+      .catch(function (error) {
+        console.error("Error removing element from cards: ", error);
+      });
+
+    this.props.firebase
+      .userCard(key)
+      .remove()
+      .then(function () {
+        console.log("Element deleted from user's cards");
+      })
+      .catch(function (error) {
+        console.error("Error removing element from user's cards: ", error);
+      });
+    
+    const filteredCards = this.state.cards.filter(card => card.cid !== key);
+    await this.setState({ cards: filteredCards });
+    console.log(this.state.cards);
   }
 
   render() {
@@ -49,7 +106,10 @@ class Card extends Component {
             xl={9}
             xs={12}
           >
-            <CardList />
+            <CardList 
+             cards = {this.state.cards}
+             deleteCardFn = {this.deleteCard}
+            />
           </Grid>
         </Grid>
       </div>

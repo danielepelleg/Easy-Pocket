@@ -45,6 +45,13 @@ class CardBase extends Component {
     };
   }
 
+  /**
+   * Set the State with 
+   *  Card's Informations
+   */
+  componentDidMount = () => {
+  };
+
   render() {
     const { card } = this.props;
 
@@ -55,13 +62,16 @@ class CardBase extends Component {
           {...this.props.rest}
           className={clsx(this.props.classes.root, this.props.className)}
         >
-          <CardHeader titleTypographyProps={{variant:"h2"}} title={card.name} />
+          <CardHeader
+            titleTypographyProps={{ variant: "h2" }}
+            title={card.name}
+          />
           <Divider />
           <CardContent>
             <div className={this.props.classes.details}>
               <div>
                 <Typography gutterBottom variant="h4">
-                  {card.money} €
+                  {card.money}
                 </Typography>
                 <Typography
                   className={this.props.classes.locationText}
@@ -81,11 +91,25 @@ class CardBase extends Component {
               EDIT
             </Button>
 
-            <Button variant="text">DELETE</Button>
+            <Button 
+            variant="text" 
+            onClick={() => {
+              this.deleteCardItem(card.cid);
+            }}>
+              DELETE
+            </Button>
           </CardActions>
         </Card>
       </Grid>
     );
+  }
+
+  /**
+   *      *** DELETE CARD METHOD ***
+   * Delete a Card Item.
+   */
+  deleteCardItem = key => {
+    this.props.deleteCardFn(key);
   }
 }
 
