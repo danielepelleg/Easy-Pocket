@@ -64,45 +64,6 @@ class AddCard extends Component {
   }
 
   /**
-   *      *** CARD REGISTRATION ***
-   *
-   * Submit the forms. Register a new User's Card.
-   */
-  onSubmit = (event) => {
-    const { name, owner, money, color } = this.state;
-
-    const cardsRef = this.props.firebase.cards();
-    const uid = this.props.firebase.auth.currentUser.uid;
-    const userCardsListRef = this.props.firebase.userCards(uid);
-
-    let newCardRef = cardsRef.push();
-
-    // New Key ID for the Card
-    const newCardId = newCardRef.key;
-    newCardRef.set({
-      name: name,
-      owner: owner,
-      money: money,
-      color: color,
-      [uid]: true,
-    });
-    const newCard = { newCardId: true };
-
-    // Rewrite the cards list and add the new one
-    userCardsListRef.on("value", (snapshot) => {
-      const cardsList = snapshot.val();
-      if (cardsList) {
-        cardsList[newCardId] = true;
-        userCardsListRef.set(cardsList);
-      } else
-        userCardsListRef.set(newCard);
-    });
-
-    this.setState({ ...INITIAL_STATE });
-    event.preventDefault();
-  };
-
-  /**
    *      *** ON CHANGE METHOD ***
    * Change the State on form's update.
    */
@@ -237,6 +198,28 @@ class AddCard extends Component {
       </Card>
     );
   }
+
+  /**
+   *      *** CARD REGISTRATION ***
+   *
+   * Submit the forms. Register a new User's Card.
+   */
+  onSubmit = (event) => {
+    const { name, owner, money, color } = this.state;
+
+    const uid = this.props.firebase.auth.currentUser.uid;
+    
+    const newCard = {
+      name: name,
+      owner: owner,
+      money: money,
+      color: color,
+      [uid]: true,
+    }
+    this.setState({ ...INITIAL_STATE });
+    event.preventDefault();
+    this.props.addCard(newCard);
+  };
 }
 
 AddCard.propTypes = {
@@ -251,8 +234,8 @@ export { AddCardBase };
  *    *** ADD CARD FORM ***
  * Render the Add Card Form with custom styles.
  */
-export default function AddCardForm() {
+export default function AddCardForm(props) {
   const classes = useStyles();
 
-  return <AddCardBase classes={classes} />;
+  return <AddCardBase {...props} classes={classes} />;
 }

@@ -83,6 +83,45 @@ class Card extends Component {
     console.log(this.state.cards);
   }
 
+  addCard = async newCard => {
+    console.log(newCard);
+    const cardsRef = this.props.firebase.cards();
+    const uid = this.props.firebase.auth.currentUser.uid;
+    const userCardsListRef = this.props.firebase.userCards(uid);
+
+    let newCardRef = cardsRef.push();
+
+    // New Key ID for the Card
+    const newCardId = newCardRef.key;
+    newCardRef
+    .set(newCard)
+    .then(function() {
+      console.log("New Card added");
+    })
+    .catch(function(error) {
+      console.error("error adding card", error);
+    });
+
+    // Rewrite the cards list and add the new one
+    userCardsListRef.on("value", (snapshot) => {
+      const cardsList = snapshot.val();
+      if (cardsList) {
+        cardsList[newCardId] = true;
+        userCardsListRef.set(cardsList);
+      }
+    });
+
+    const cardDetail = {
+      cid: newCardId,
+      name: newCard.name,
+      owner: newCard.owner,
+      money: newCard.money,
+      color: newCard.color
+    }
+
+    await this.setState({ cards: [...this.state.cards, cardDetail] })
+  }
+
   render() {
     return (
       <div className={this.props.classes.root}>
@@ -97,7 +136,7 @@ class Card extends Component {
             xl={3}
             xs={12}
           >
-            <AddCard />
+            <AddCard addCard = {this.addCard} />
           </Grid>
           <Grid
             item

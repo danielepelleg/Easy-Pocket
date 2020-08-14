@@ -71,7 +71,7 @@ class CardBase extends Component {
             <div className={this.props.classes.details}>
               <div>
                 <Typography gutterBottom variant="h4">
-                  {card.money}
+                  {card.money} €
                 </Typography>
                 <Typography
                   className={this.props.classes.locationText}
