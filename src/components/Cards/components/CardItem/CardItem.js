@@ -45,13 +45,6 @@ class CardBase extends Component {
     };
   }
 
-  /**
-   * Set the State with 
-   *  Card's Informations
-   */
-  componentDidMount = () => {
-  };
-
   render() {
     const { card } = this.props;
 
@@ -62,17 +55,21 @@ class CardBase extends Component {
           {...this.props.rest}
           className={clsx(this.props.classes.root, this.props.className)}
         >
+
           <CardHeader
             titleTypographyProps={{ variant: "h2" }}
             title={card.name}
           />
           <Divider />
+
           <CardContent>
             <div className={this.props.classes.details}>
               <div>
+
                 <Typography gutterBottom variant="h4">
                   {card.money} €
                 </Typography>
+
                 <Typography
                   className={this.props.classes.locationText}
                   color="textSecondary"
@@ -80,6 +77,7 @@ class CardBase extends Component {
                 >
                   {card.owner}
                 </Typography>
+
               </div>
             </div>
           </CardContent>
@@ -99,14 +97,14 @@ class CardBase extends Component {
               DELETE
             </Button>
           </CardActions>
+
         </Card>
       </Grid>
     );
   }
 
   /**
-   *      *** DELETE CARD METHOD ***
-   * Delete a Card Item.
+   * Delete a Card from Firebase
    */
   deleteCardItem = key => {
     this.props.deleteCardFn(key);

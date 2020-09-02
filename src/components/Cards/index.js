@@ -30,6 +30,7 @@ class Card extends Component {
         const uid = currentComponent.props.firebase.auth.currentUser.uid;
         const refCardList = currentComponent.props.firebase.userCards(uid);
 
+        // Set the State
         refCardList.once("value").then(function (snapshot) {
           cardsIds = snapshot.val();
           let cardsList = [];
@@ -57,7 +58,14 @@ class Card extends Component {
     });
   };
 
+  /**
+   * Delete a card using its cid (card identification) from the /cards collection
+   *  and the relative user's object list.
+   * 
+   * @param {the cid of the card to delete} key 
+   */
   deleteCard = async key => {
+    // Remove the card from the collection
     this.props.firebase
       .card(key)
       .remove()
@@ -68,6 +76,7 @@ class Card extends Component {
         console.error("Error removing element from cards: ", error);
       });
 
+    // Remove the card from the user cards list
     this.props.firebase
       .userCard(key)
       .remove()
@@ -78,11 +87,19 @@ class Card extends Component {
         console.error("Error removing element from user's cards: ", error);
       });
     
+    // Rewrite the new cards list without the one deleted
     const filteredCards = this.state.cards.filter(card => card.cid !== key);
     await this.setState({ cards: filteredCards });
     console.log(this.state.cards);
   }
 
+  /**
+   * Add a newCard to Firebase.
+   * Save the new card in a collection /cards with its cid (card id),
+   *  and save the foreign key to the user's object cards in the user's collection.
+   *  
+   * @param {the card to add} newCard 
+   */
   addCard = async newCard => {
     console.log(newCard);
     const cardsRef = this.props.firebase.cards();
@@ -93,16 +110,17 @@ class Card extends Component {
 
     // New Key ID for the Card
     const newCardId = newCardRef.key;
+    // Add the Card to Firebase
     newCardRef
     .set(newCard)
     .then(function() {
       console.log("New Card added");
     })
     .catch(function(error) {
-      console.error("error adding card", error);
+      console.error("error adding a new card", error);
     });
 
-    // Rewrite the cards list and add the new one
+    // Rewrite the user's cards list adding the new one
     userCardsListRef.on("value", (snapshot) => {
       const cardsList = snapshot.val();
       if (cardsList) {
@@ -111,6 +129,7 @@ class Card extends Component {
       }
     });
 
+    // Details of the new Card
     const cardDetail = {
       cid: newCardId,
       name: newCard.name,
@@ -129,6 +148,7 @@ class Card extends Component {
           container
           spacing={4}
           >
+
           <Grid
             item
             lg={3}
@@ -138,6 +158,7 @@ class Card extends Component {
           >
             <AddCard addCard = {this.addCard} />
           </Grid>
+
           <Grid
             item
             lg={9}
@@ -150,6 +171,7 @@ class Card extends Component {
              deleteCardFn = {this.deleteCard}
             />
           </Grid>
+          
         </Grid>
       </div>
     );

@@ -72,7 +72,7 @@ class AddCard extends Component {
   };
 
   /**
-   * Display the ColorPicker on Click
+   * Display or not the ColorPicker on Click
    */
   handleClick = () => {
     this.setState({ displayColorPicker: !this.state.displayColorPicker });
@@ -121,6 +121,7 @@ class AddCard extends Component {
           <CardHeader title="Add a New Card" />
 
           <Divider />
+
           <ColorLensIcon
             className="palette-icon"
             onClick={this.handleClick}
@@ -194,6 +195,7 @@ class AddCard extends Component {
             </Button>
             {error && <p>{error.message}</p>}
           </CardActions>
+
         </form>
       </Card>
     );
@@ -218,6 +220,8 @@ class AddCard extends Component {
     }
     this.setState({ ...INITIAL_STATE });
     event.preventDefault();
+
+    // Add the Card to Firebase
     this.props.addCard(newCard);
   };
 }
