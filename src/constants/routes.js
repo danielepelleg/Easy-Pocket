@@ -12,3 +12,4 @@ export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 export const DASHBOARD = '/Dashboard';
 export const CARDS = '/cards';
+export const PAYMENTS = '/payments'

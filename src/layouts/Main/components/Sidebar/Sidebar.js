@@ -54,14 +54,14 @@ const Sidebar = props => {
       icon: <PeopleIcon />
     },
     {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
-    },
-    {
       title: 'Cards',
       href: '/cards',
       icon: <CreditCardIcon />
+    },
+    {
+      title: 'Payments',
+      href: '/payments',
+      icon: <ShoppingBasketIcon />
     },
     {
       title: 'Typography',
