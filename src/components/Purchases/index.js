@@ -23,7 +23,7 @@ class Purchase extends Component {
   }
   
   UNSAFE_componentWillMount() {
-    
+    console.log(this.state.purchases);
   };
 
   /**
@@ -32,7 +32,7 @@ class Purchase extends Component {
    * 
    * @param {the pid of the payment to delete} key 
    */
-  deleteCard = async key => {
+  deletePurchase = async key => {
     
   }
 
@@ -43,8 +43,49 @@ class Purchase extends Component {
    *  
    * @param {the purchase to add} newCard 
    */
-  addCard = async newCard => {
-    
+  addPurchase = async newPurchase => {
+    const purchasesRef = this.props.firebase.purchases();
+    const uid = this.props.firebase.auth.currentUser.uid;
+    const userPurchasesListRef = this.props.firebase.userPurchases(uid);
+
+    let newPurchaseRef = purchasesRef.push();
+
+    // New Key ID for the Purchase
+    const newPurchaseId = newPurchaseRef.key;
+    // Add the Purchase to Firebase
+    newPurchaseRef
+    .set(newPurchase)
+    .then(function() {
+      console.log("New Purchase added");
+    })
+    .catch(function(error) {
+      console.error("error adding a new purchase", error);
+    });
+
+    // Rewrite the user's cards list adding the new one
+    userPurchasesListRef.on("value", (snapshot) => {
+      const purchasesList = snapshot.val();
+      if (purchasesList) {
+        purchasesList[newPurchaseId] = true;
+        userPurchasesListRef.set(purchasesList);
+      }
+      else 
+        userPurchasesListRef.set({ [newPurchaseId]: true })
+    });
+
+    const cid = newPurchase.cid;
+
+    // Details of the new Purchase
+    const purchaseDetail = {
+      pid: newPurchaseId,
+      product: newPurchase.product,
+      date: newPurchase.date,
+      cost: newPurchase.cost,
+      [cid]: true,
+      category: newPurchase.category
+    }
+
+    await this.setState({ purchases: [...this.state.purchases, purchaseDetail] })
   }
 
   render() {
@@ -62,7 +103,7 @@ class Purchase extends Component {
             xl={3}
             xs={12}
           >
-            <AddPurchase addCard = {this.addCard} />
+            <AddPurchase addPurchase = {this.addPurchase} />
           </Grid>
 
           <Grid

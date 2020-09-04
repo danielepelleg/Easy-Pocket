@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
+import MenuItem from '@material-ui/core/MenuItem';
 
 /// Firebase
 import { withFirebase } from "components/Firebase";
@@ -46,6 +47,7 @@ const INITIAL_STATE = {
   product: "",
   date: "",
   cost: "",
+  card: "",
   category: "",
   error: null,
 };
@@ -57,20 +59,54 @@ class AddPurchase extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { ...INITIAL_STATE, todayDate: "" };
+    this.state = { ...INITIAL_STATE, cards: [] };
   }
 
   UNSAFE_componentWillMount() {
+    // Set the today date to state
     const now = new Date();
-    let month = (now.getMonth() + 1);               
+    let month = now.getMonth() + 1;
     let day = now.getDate();
 
-    if (month < 10) 
-        month = "0" + month;
-    if (day < 10) 
-        day = "0" + day;
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
     var today = now.getFullYear() + "-" + month + "-" + day;
-    this.setState({ todayDate: today });
+    this.setState({ date: today });
+
+    // Set the card list to state
+    const currentComponent = this;
+    let cardsIds = [];
+    currentComponent.props.firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        const uid = currentComponent.props.firebase.auth.currentUser.uid;
+        const refCardList = currentComponent.props.firebase.userCards(uid);
+
+        refCardList.once("value").then(function (snapshot) {
+          cardsIds = snapshot.val();
+          let cardsList = [];
+          for (let element in cardsIds) {
+            currentComponent.props.firebase
+              .card(element)
+              .once("value")
+              .then(function (snapshot1) {
+                if (snapshot1.val() !== null) {
+                  let newCard = {
+                    cid: element,
+                    name: snapshot1.val().name,
+                    owner: snapshot1.val().owner,
+                    money: snapshot1.val().money,
+                    color: snapshot1.val().color,
+                  };
+                  cardsList.push(newCard);
+                  currentComponent.setState({ cards: cardsList });
+                }
+              });
+          }
+        });
+      } else {
+        // No user is signed in.
+      }
+    });
   }
 
   /**
@@ -97,29 +133,38 @@ class AddPurchase extends Component {
   };
 
   render() {
-    const { product, date, cost, category, todayDate, error } = this.state;
+    const { product, date, cost, card, category, cards, error } = this.state;
 
     // Define the Purchase's Categories
     const categories = [
       {
-        value: 'clothing',
-        label: 'Clothing'
+        value: "clothing",
+        label: "Clothing",
       },
       {
-        value: 'food',
-        label: 'Food'
+        value: "food",
+        label: "Food",
       },
       {
-        value: 'technology',
-        label: 'Technology'
+        value: "technology",
+        label: "Technology",
       },
       {
-        value: 'culture',
-        label: 'Culture'
-      }
+        value: "culture",
+        label: "Culture",
+      },
     ];
 
-    const isInvalid = product === "" || date === "" || cost === "" || cost < 0 || category === "";
+    const isInvalid =
+      product === "" ||
+      date === "" ||
+      cost === "" ||
+      cost < 0 ||
+      category === "" ||
+      card === "" ||
+      cost > card.money;
+
+      
 
     return (
       <Card
@@ -136,10 +181,11 @@ class AddPurchase extends Component {
             <Grid container spacing={1}>
               <Grid item md={12} xs={12}>
                 <TextField
+                  // *** PRODUCT NAME ***
                   fullWidth
-                  label="Product name"
+                  label="Product Name"
                   margin="dense"
-                  name="name"
+                  name="product"
                   onChange={this.onChange}
                   required
                   value={product}
@@ -150,11 +196,11 @@ class AddPurchase extends Component {
 
               <Grid item md={12} xs={12}>
                 <TextField
+                  // *** DATE OF PURCHASE ***
                   id="date"
                   label="Purchase Date"
                   type="date"
-                  value={date}
-                  defaultValue={todayDate}
+                  defaultValue={date}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -163,6 +209,7 @@ class AddPurchase extends Component {
 
               <Grid item md={12} xs={12}>
                 <TextField
+                  // *** COST OF THE PRODUCT ***
                   fullWidth
                   label="Cost"
                   margin="dense"
@@ -175,30 +222,46 @@ class AddPurchase extends Component {
               </Grid>
 
               <Grid item md={12} xs={12}>
-              <TextField
-                fullWidth
-                label="Select Category"
-                margin="dense"
-                name="category"
-                onChange={this.onChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={category}
-                variant="outlined"
-              >
-                {categories.map(option => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+                <TextField
+                  // CARD OF PURCHASE
+                  fullWidth
+                  name="card"
+                  id="card"
+                  select
+                  label="Select"
+                  value={card}
+                  onChange={this.onChange}
+                  helperText="Please select one of your card"
+                  variant="outlined"
+                >
+                  {cards.map((option) => (
+                    <MenuItem key={option.cid} value={option}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Grid>
 
+              <Grid item md={12} xs={12}>
+                <TextField
+                  // *** CATEGORY ***
+                  fullWidth
+                  label="Select Category"
+                  margin="dense"
+                  name="category"
+                  onChange={this.onChange}
+                  select
+                  value={category}
+                  helperText="Choose a category"
+                  variant="outlined"
+                >
+                  {categories.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
             </Grid>
           </CardContent>
 
@@ -222,11 +285,30 @@ class AddPurchase extends Component {
   }
 
   /**
-   *      *** CARD REGISTRATION ***
+   *      *** PURCHASE REGISTRATION ***
    *
-   * Submit the forms. Register a new User's Card.
+   * Submit the forms. Register a new User's Purchase.
    */
-  onSubmit = (event) => {};
+  onSubmit = (event) => {
+    const { product, date, cost, card, category } = this.state;
+
+    const uid = this.props.firebase.auth.currentUser.uid;
+    const cid = card.cid;
+
+    const newPurchase = {
+      product: product,
+      date: date,
+      cost: cost,
+      [cid]: true,
+      category: category,
+      [uid]: true,
+    };
+    this.setState({ ...INITIAL_STATE });
+    event.preventDefault();
+
+    // Add the Card to Firebase
+    this.props.addPurchase(newPurchase);
+  };
 }
 
 AddPurchase.propTypes = {
