@@ -109,7 +109,9 @@ class Firebase {
 
   userCards = (uid) => this.db.ref(`users/${uid}/cards`);
 
-  userCard = (cid) => this.db.ref(`users/`+ this.auth.currentUser.uid + `/cards/${cid}`);
+  userCard = (uid, cid) => this.db.ref(`users/${uid}/cards/${cid}`);
+
+  card = (cid) => this.db.ref(`cards/${cid}`);
 
   userPurchases = (uid) => this.db.ref(`users/${uid}/purchases`);
 
