@@ -21,10 +21,6 @@ class Purchase extends Component {
       purchases: [],
     };
   }
-  
-  UNSAFE_componentWillMount() {
-    console.log(this.state.purchases);
-  };
 
   /**
    * Delete a payment using its pid (purchase identification) from the /purchases collection
@@ -43,12 +39,33 @@ class Purchase extends Component {
    *  
    * @param {the purchase to add} newCard 
    */
-  addPurchase = async newPurchase => {
+  addPurchase = async (newPurchase, userCard) => {
     const purchasesRef = this.props.firebase.purchases();
     const uid = this.props.firebase.auth.currentUser.uid;
+    const cid = userCard.cid;
     const userPurchasesListRef = this.props.firebase.userPurchases(uid);
+    const userCardRef = this.props.firebase.card(cid);
 
     let newPurchaseRef = purchasesRef.push();
+
+    // Update the actual current money on the card
+    const updatedCard = {
+      [uid]: true,
+      name: userCard.name,
+      owner: userCard.owner,
+      money: userCard.money - newPurchase.cost,
+      color: userCard.color,
+    }
+
+    console.log(updatedCard);
+    userCardRef
+    .set(updatedCard)
+    .then(function() {
+      console.log("Card updated");
+    })
+    .catch(function(error) {
+      console.error("error updating the card", error);
+    });
 
     // New Key ID for the Purchase
     const newPurchaseId = newPurchaseRef.key;
@@ -72,8 +89,6 @@ class Purchase extends Component {
       else 
         userPurchasesListRef.set({ [newPurchaseId]: true })
     });
-
-    const cid = newPurchase.cid;
 
     // Details of the new Purchase
     const purchaseDetail = {
