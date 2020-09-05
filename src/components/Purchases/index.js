@@ -128,6 +128,7 @@ class Purchase extends Component {
             xl={9}
             xs={12}
           >
+            <PurchaseList />
             {/*
             <PurchaseList 
              cards = {this.state.cards}
