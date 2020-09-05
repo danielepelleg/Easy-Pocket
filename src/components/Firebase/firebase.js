@@ -129,6 +129,8 @@ class Firebase {
    */
   card = (cid) => this.db.ref(`cards/${cid}`);
 
+  purchase = (pid) => this.db.ref(`purchases/${pid}`);
+
   cards = () => this.db.ref("cards");
 
   purchases = () => this.db.ref("purchases");
