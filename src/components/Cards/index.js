@@ -22,7 +22,7 @@ class Card extends Component {
     };
   }
   
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const currentComponent = this;
     let cardsIds = [];
     currentComponent.props.firebase.auth.onAuthStateChanged(function (user) {

@@ -10,12 +10,11 @@ class CardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cidList: [],
       cards: [],
     };
   }
 
-  componentWillMount = () => {
+  UNSAFE_componentWillMount = () => {
     const currentComponent = this;
     let cardsIds = [];
     currentComponent.props.firebase.auth.onAuthStateChanged(function (user) {
