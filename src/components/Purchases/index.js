@@ -17,9 +17,60 @@ class Purchase extends Component {
     super(props);
  
     this.state = {
-      pidList: [],
       purchases: [],
     };
+  }
+
+  UNSAFE_componentWillMount = () => {
+    const currentComponent = this;
+    let cardsIds = [];
+    currentComponent.props.firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        const uid = currentComponent.props.firebase.auth.currentUser.uid;
+        const refCardList = currentComponent.props.firebase.userCards(uid);
+
+        refCardList.once("value").then(function (snapshot) {
+          cardsIds = snapshot.val();
+          let purchasesList = [];
+          
+          for (let _card in cardsIds) {
+            let purchasesIds = [];
+            currentComponent.props.firebase
+              .card(_card)
+              .once("value")
+              .then(function (cardSnapshot) {
+                if (cardSnapshot.val() !== null) {
+                  if (cardSnapshot.val().purchases !== null ) {
+                  purchasesIds = cardSnapshot.val().purchases;
+                  for (let _purchase in purchasesIds) {
+                    currentComponent.props.firebase
+                    .purchase(_purchase)
+                    .once("value")
+                    .then(function (purchaseSnapshot) {
+                      if (purchaseSnapshot.val() !== null) {
+                        let newPurchase = {
+                          pid: _purchase,
+                          product: purchaseSnapshot.val().product,
+                          date: purchaseSnapshot.val().date,
+                          cost: purchaseSnapshot.val().cost,
+                          cid: _card,
+                          card: cardSnapshot.val().name,
+                          category: purchaseSnapshot.val().category,
+                        };
+                        purchasesList.push(newPurchase);
+                        currentComponent.setState({ purchases: purchasesList });
+                      }
+                    });
+                  }
+                }
+                }
+              });
+          };
+        });
+      } else {
+        // No user is signed in.
+      }
+    });   
   }
 
   /**
@@ -44,6 +95,7 @@ class Purchase extends Component {
     const uid = this.props.firebase.auth.currentUser.uid;
     const cid = userCard.cid;
     const userPurchasesListRef = this.props.firebase.userPurchases(uid);
+    const cardPurchasesListRef = this.props.firebase.cardPurchases(cid);
     const userCardRef = this.props.firebase.card(cid);
 
     let newPurchaseRef = purchasesRef.push();
@@ -79,7 +131,7 @@ class Purchase extends Component {
       console.error("error adding a new purchase", error);
     });
 
-    // Rewrite the user's cards list adding the new one
+    // Rewrite the user's purchase list adding the new one
     userPurchasesListRef.on("value", (snapshot) => {
       const purchasesList = snapshot.val();
       if (purchasesList) {
@@ -88,6 +140,17 @@ class Purchase extends Component {
       }
       else 
         userPurchasesListRef.set({ [newPurchaseId]: true })
+    });
+
+    // Rewrite the card's purchase list adding the new one
+    cardPurchasesListRef.on("value", (snapshot) => {
+      const purchasesList = snapshot.val();
+      if (purchasesList) {
+        purchasesList[newPurchaseId] = true;
+        cardPurchasesListRef.set(purchasesList);
+      }
+      else 
+        cardPurchasesListRef.set({ [newPurchaseId]: true })
     });
 
     // Details of the new Purchase
@@ -128,6 +191,10 @@ class Purchase extends Component {
             xl={9}
             xs={12}
           >
+            <PurchaseList 
+              purchases = {this.state.purchases}
+              deletePurchaseFn = {this.deletePurchase}
+            />
             {/*
             <PurchaseList 
              cards = {this.state.cards}
