@@ -52,7 +52,7 @@ class PurchaseList extends Component {
                   {purchase.product}
                 </TableCell>
                 <TableCell align="right">{purchase.date}</TableCell>
-                <TableCell align="right">{purchase.cost}</TableCell>
+                <TableCell align="right">{purchase.cost} €</TableCell>
                 <TableCell align="right">{purchase.card}</TableCell>
                 <TableCell align="right">{purchase.category}</TableCell>
                 <TableCell align="center">

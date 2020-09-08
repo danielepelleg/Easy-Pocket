@@ -12,7 +12,7 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from "@material-ui/core/MenuItem";
 
 /// Firebase
 import { withFirebase } from "components/Firebase";
@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
  */
 const INITIAL_STATE = {
   product: "",
-  date: "",
   cost: "",
   card: "",
   category: "",
@@ -59,7 +58,7 @@ class AddPurchase extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { ...INITIAL_STATE, cards: [] };
+    this.state = { ...INITIAL_STATE, date: "", cards: [] };
   }
 
   UNSAFE_componentWillMount() {
@@ -117,21 +116,6 @@ class AddPurchase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  /**
-   * Close the ColorPicker
-   */
-  handleClose = () => {
-    this.setState({ displayColorPicker: false });
-  };
-
-  /**
-   * Set the Color in the state once it has been chosen
-   * @param {color} color
-   */
-  handleChangeComplete = (color) => {
-    this.setState({ color: color.hex });
-  };
-
   render() {
     const { product, date, cost, card, category, cards, error } = this.state;
 
@@ -163,8 +147,6 @@ class AddPurchase extends Component {
       category === "" ||
       card === "" ||
       cost > card.money;
-
-      
 
     return (
       <Card
@@ -290,7 +272,7 @@ class AddPurchase extends Component {
    * Submit the forms. Register a new User's Purchase.
    */
   onSubmit = (event) => {
-    const { product, date, cost, card, category } = this.state;
+    const { product, date, cost, card, category, cards } = this.state;
 
     const uid = this.props.firebase.auth.currentUser.uid;
     const cid = card.cid;
@@ -303,6 +285,15 @@ class AddPurchase extends Component {
       category: category,
       [uid]: true,
     };
+
+    // Update Card state updating money on the card
+    for (var i = 0; i < cards.length; i++){
+      if (cards[i].cid === cid) {
+        cards[i].money = card.money - cost;
+      } else cards[i].money = card.money;
+    }
+
+    // Reset the forms
     this.setState({ ...INITIAL_STATE });
     event.preventDefault();
 

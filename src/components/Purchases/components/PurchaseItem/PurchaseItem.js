@@ -1,20 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import {
-  Grid,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Typography,
-  Divider,
-  Button,
-} from "@material-ui/core";
 import { withFirebase } from "components/Firebase";
 import { withAuthentication } from "components/Session";
 import { compose } from "recompose";
+
+import TableCell from "@material-ui/core/TableCell";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,85 +28,47 @@ class PurchaseBase extends Component {
     super(props);
 
     this.state = {
+      pid: "",
+      product: "",
+      date: "",
+      cost: "",
       cid: "",
-      name: "",
-      owner: "",
-      money: "",
-      color: "",
+      category: "",
     };
   }
 
   render() {
-    const { card } = this.props;
+    const { purchase } = this.props;
 
     return (
-      <Grid item lg={3} md={6} xl={3} xs={12}>
-        <Card
-          style={{ backgroundColor: card.color }}
-          {...this.props.rest}
-          className={clsx(this.props.classes.root, this.props.className)}
-        >
-
-          <CardHeader
-            titleTypographyProps={{ variant: "h2" }}
-            title={card.name}
-          />
-          <Divider />
-
-          <CardContent>
-            <div className={this.props.classes.details}>
-              <div>
-
-                <Typography gutterBottom variant="h4">
-                  {card.money} €
-                </Typography>
-
-                <Typography
-                  className={this.props.classes.locationText}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  {card.owner}
-                </Typography>
-
-              </div>
-            </div>
-          </CardContent>
-
-          <Divider />
-
-          <CardActions>
-            <Button className={this.props.classes.uploadButton} variant="text">
-              EDIT
-            </Button>
-
-            <Button 
-            variant="text" 
-            onClick={() => {
-              this.deleteCardItem(card.cid);
-            }}>
-              DELETE
-            </Button>
-          </CardActions>
-
-        </Card>
-      </Grid>
+      <div>
+          <TableCell component="th" scope="row">
+            {purchase.product}
+          </TableCell>
+          <TableCell align="right">{purchase.date}</TableCell>
+          <TableCell align="right">{purchase.cost}</TableCell>
+          <TableCell align="right">{purchase.card}</TableCell>
+          <TableCell align="right">{purchase.category}</TableCell>
+      </div>
     );
   }
 
   /**
    * Delete a Card from Firebase
    */
-  deleteCardItem = key => {
-    this.props.deleteCardFn(key);
-  }
+  deletePurchaseItem = (key) => {
+    this.props.deletePurchaseFn(key);
+  };
 }
 
 PurchaseBase.propTypes = {
   className: PropTypes.string,
 };
 
-const PurchaseItemBase = compose(withFirebase, withAuthentication)(PurchaseBase);
+const PurchaseItemBase = compose(
+  withFirebase,
+  withAuthentication
+)(PurchaseBase);
 
 export default function PurchaseItem(props) {
   const classes = useStyles();
