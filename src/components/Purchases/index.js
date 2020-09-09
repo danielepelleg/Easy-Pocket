@@ -18,7 +18,6 @@ class Purchase extends Component {
 
     this.state = {
       purchases: [],
-      cards: []
     };
   }
 
@@ -82,7 +81,47 @@ class Purchase extends Component {
    *
    * @param {the pid of the payment to delete} key
    */
-  deletePurchase = async (key) => {};
+  deletePurchase = async (key, cid) => {
+    const uid = this.props.firebase.auth.currentUser.uid;
+
+    // Remove the purchase from the collection
+    this.props.firebase
+      .purchase(key)
+      .remove()
+      .then(function () {
+        console.log("Purchase ID: " + key + " deleted from purchases");
+      })
+      .catch(function (error) {
+        console.error("Error removing element from purchases: ", error);
+      });
+
+    // Remove the purchase from the user purchases list
+    this.props.firebase
+      .userPurchase(uid, key)
+      .remove()
+      .then(function () {
+        console.log("Element deleted from user's purchases");
+      })
+      .catch(function (error) {
+        console.error("Error removing element from user's purchases: ", error);
+      });
+
+    // Remove the purchase from the card purchases list
+    this.props.firebase
+    .cardPurchase(cid, key)
+    .remove()
+    .then(function () {
+      console.log("Element deleted from card's purchases");
+    })
+    .catch(function (error) {
+      console.error("Error removing element from card's purchases: ", error);
+    });
+    
+    // Rewrite the new cards list without the one deleted
+    const filteredPurchases = this.state.purchases.filter(purchase => purchase.pid !== key);
+    await this.setState({ purchases: filteredPurchases });
+    console.log(this.state.purchases);
+  };
 
   /**
    * Add a newPurchase to Firebase.
@@ -202,8 +241,8 @@ class Purchase extends Component {
 
           <Grid item lg={9} md={6} xl={9} xs={12}>
             <PurchaseList
-              purchases={this.state.purchases}
-              deletePurchaseFn={this.deletePurchase}
+              purchases = {this.state.purchases}
+              deletePurchase = {this.deletePurchase}
             />
             {/*
             <PurchaseList 
