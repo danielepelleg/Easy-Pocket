@@ -93,7 +93,7 @@ class AddPurchase extends Component {
                     cid: element,
                     name: snapshot1.val().name,
                     owner: snapshot1.val().owner,
-                    money: snapshot1.val().money,
+                    money: parseInt(snapshot1.val().money),
                     color: snapshot1.val().color,
                   };
                   cardsList.push(newCard);

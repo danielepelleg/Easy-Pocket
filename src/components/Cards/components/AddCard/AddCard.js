@@ -214,7 +214,7 @@ class AddCard extends Component {
     const newCard = {
       name: name,
       owner: owner,
-      money: money,
+      money: parseInt(money),
       color: color,
       [uid]: true,
     }
