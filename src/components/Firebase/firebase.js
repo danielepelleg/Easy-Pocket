@@ -107,17 +107,25 @@ class Firebase {
    */
   user = (uid) => this.db.ref(`users/${uid}`);
 
+  // REFERENCES FOR CARDS
+
   userCards = (uid) => this.db.ref(`users/${uid}/cards`);
 
   userCard = (uid, cid) => this.db.ref(`users/${uid}/cards/${cid}`);
 
   card = (cid) => this.db.ref(`cards/${cid}`);
 
+  cardMoney = (cid) => this.db.ref(`cards/${cid}/money`);
+
+  // REFERENCES FOR PURCHASES
+
   userPurchases = (uid) => this.db.ref(`users/${uid}/purchases`);
+
+  userPurchase = (uid, pid) => this.db.ref(`users/${uid}/purchases/${pid}`);
 
   cardPurchases = (cid) => this.db.ref(`cards/${cid}/purchases`);
 
-  cardMoney = (cid) => this.db.ref(`cards/${cid}/money`);
+  cardPurchase = (cid, pid) => this.db.ref(`cards/${cid}/purchases/${pid}`);
 
   authUserCards = () => this.db.ref("users/" + this.auth.currentUser.uid + '/cards');
 
