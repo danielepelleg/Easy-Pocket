@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
 } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 
 /// Firebase
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   uploadButton: {
     marginRight: theme.spacing(2),
-  },
+  }
 }));
 
 /**
@@ -146,6 +147,9 @@ class AddPurchase extends Component {
       cost < 0 ||
       category === "" ||
       card === "" ||
+      cost > card.money;
+
+    const invalidPurchase =
       cost > card.money;
 
     return (
@@ -259,6 +263,11 @@ class AddPurchase extends Component {
             >
               Save
             </Button>
+            { invalidPurchase ?
+              <Typography component="h5-6" variant="h5">
+              NOT ENOGH MONEY ON THE CARD
+              </Typography> : null
+            }
             {error && <p>{error.message}</p>}
           </CardActions>
         </form>
