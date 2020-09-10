@@ -17,3 +17,4 @@ export { default as Login } from './Login';
 export { default as PasswordForget } from './PasswordForget';
 export { default as Cards } from './Cards';
 export { default as Purchases } from './Purchases'
+export { default as Account } from './Account'

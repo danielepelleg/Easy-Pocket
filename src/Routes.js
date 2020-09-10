@@ -11,7 +11,8 @@ import {
   Main,
   Login,
   Cards,
-  Purchases
+  Purchases,
+  Account
 } from './components'
 
 
@@ -42,6 +43,9 @@ const Routes = () => (
       />
       <RouteWithLayout
         exact path={ROUTES.PAYMENTS} component={Purchases} layout={MainLayout}
+      />
+      <RouteWithLayout
+        exact path={ROUTES.ACCOUNT} component={Account} layout={MainLayout}
       />
     </Switch>
 );
