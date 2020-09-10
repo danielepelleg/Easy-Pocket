@@ -48,7 +48,7 @@ const INITIAL_STATE = {
   name: "",
   owner: "",
   money: "",
-  color: "#fff",
+  color: "#ffc17a",
   error: null,
   displayColorPicker: false,
 };
@@ -96,6 +96,8 @@ class AddCard extends Component {
   render() {
     const { name, owner, money, error } = this.state;
 
+    const colors = ['#FFC17a', '#FFEC70', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#F26E6E', '#F78DA7', '#C96BFF']
+
     const isInvalid = name === "" || owner === "" || money === "" || money < 0;
 
     const popover = {
@@ -131,6 +133,7 @@ class AddCard extends Component {
               <div style={cover} onClick={this.handleClose} />
               <TwitterPicker
                 color={this.state.color}
+                colors={colors}
                 onChangeComplete={this.handleChangeComplete}
                 triangle="hide"
               />
@@ -142,13 +145,13 @@ class AddCard extends Component {
               <Grid item md={12} xs={12}>
                 <TextField
                   fullWidth
-                  label="Card name"
+                  label="Card Name"
                   margin="dense"
                   name="name"
                   onChange={this.onChange}
                   required
                   value={this.state.name}
-                  placeholder="Card name"
+                  placeholder="Card Name"
                   variant="outlined"
                 />
               </Grid>
@@ -162,6 +165,7 @@ class AddCard extends Component {
                   onChange={this.onChange}
                   required
                   value={this.state.owner}
+                  placeholder="Owner"
                   variant="outlined"
                 />
               </Grid>
@@ -175,6 +179,7 @@ class AddCard extends Component {
                   onChange={this.onChange}
                   type="number"
                   value={this.state.money}
+                  placeholder="Money"
                   variant="outlined"
                 />
               </Grid>
