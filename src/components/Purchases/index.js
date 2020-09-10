@@ -244,12 +244,6 @@ class Purchase extends Component {
               purchases = {this.state.purchases}
               deletePurchase = {this.deletePurchase}
             />
-            {/*
-            <PurchaseList 
-             cards = {this.state.cards}
-             deleteCardFn = {this.deleteCard}
-            />
-            */}
           </Grid>
         </Grid>
       </div>
