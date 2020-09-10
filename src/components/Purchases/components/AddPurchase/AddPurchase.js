@@ -183,9 +183,11 @@ class AddPurchase extends Component {
               <Grid item md={12} xs={12}>
                 <TextField
                   // *** DATE OF PURCHASE ***
+                  name="date"
                   id="date"
                   label="Purchase Date"
                   type="date"
+                  onChange={this.onChange}
                   defaultValue={date}
                   InputLabelProps={{
                     shrink: true,
