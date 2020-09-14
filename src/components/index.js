@@ -18,3 +18,4 @@ export { default as PasswordForget } from './PasswordForget';
 export { default as Cards } from './Cards';
 export { default as Purchases } from './Purchases'
 export { default as Account } from './Account'
+export { default as Dashboard } from './Dashboard'

@@ -7,6 +7,7 @@ import * as ROUTES from './constants/routes';
 
 import {
   Home,
+  Dashboard,
   SignUp,
   Main,
   Login,
@@ -46,6 +47,9 @@ const Routes = () => (
       />
       <RouteWithLayout
         exact path={ROUTES.ACCOUNT} component={Account} layout={MainLayout}
+      />
+      <RouteWithLayout
+        exact path={ROUTES.DASHBOARD} component={Dashboard} layout={MainLayout}
       />
     </Switch>
 );
