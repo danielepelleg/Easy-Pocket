@@ -291,7 +291,7 @@ class AddPurchase extends Component {
     const newPurchase = {
       product: product,
       date: date,
-      cost: cost,
+      cost: parseInt(cost),
       [cid]: true,
       category: category,
       [uid]: true,
