@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-import { Budget, Outgoing, TaskProgress } from './components';
+import { Budget, Outgoing, TaskProgress, TrafficByCard } from './components';
 
 import { withFirebase } from "components/Firebase";
 
@@ -79,13 +79,11 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { cards, purchases } = this.state;
+    const { cards } = this.state;
 
     const totalMoney = parseInt(cards.reduce((moneyTotal, card) => moneyTotal + card.money, 0));
-    const totalCost = parseInt(purchases.reduce((costTotal, purchase) => costTotal + purchase.cost, 0));
+    const totalCost = parseInt(cards.reduce((costTotal, card) => costTotal + card.expenses, 0));
     const percentageSpent = parseFloat((totalCost/(totalMoney + totalCost))*100);
-    console.log(cards)
-    console.log(purchases)
 
     return (
       <div className={this.props.classes.root}>
@@ -153,7 +151,10 @@ class Dashboard extends Component {
             xl={3}
             xs={12}
           >
-            
+            <TrafficByCard  
+              cards = {cards}
+              totalOutgoings = {totalCost}
+            />
           </Grid>
           <Grid
             item
