@@ -45,6 +45,7 @@ class Card extends Component {
                     name: snapshot1.val().name,
                     owner: snapshot1.val().owner,
                     money: parseInt(snapshot1.val().money),
+                    expenses: 0,
                     color: snapshot1.val().color,
                   };
                   cardsList.push(newCard);
@@ -160,7 +161,7 @@ class Card extends Component {
       if (cardsList) {
         cardsList[newCardId] = true;
         userCardsListRef.set(cardsList);
-      }
+      } else userCardsListRef.set({ [newCardId]: true })
     });
 
     // Details of the new Card
@@ -169,6 +170,7 @@ class Card extends Component {
       name: newCard.name,
       owner: newCard.owner,
       money: newCard.money,
+      expenses: 0,
       color: newCard.color,
     };
 

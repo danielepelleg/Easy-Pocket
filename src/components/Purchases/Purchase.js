@@ -81,8 +81,35 @@ class Purchase extends Component {
    *
    * @param {the pid of the payment to delete} key
    */
-  deletePurchase = async (key, cid) => {
+  deletePurchase = async (key, cid, cost) => {
     const uid = this.props.firebase.auth.currentUser.uid;
+    const cardRef = this.props.firebase.card(cid);
+    const cardExpensesRef = this.props.firebase.cardExpenses(cid);
+    const cardMoneyRef = this.props.firebase.cardMoney(cid);
+
+    // Re add the money on the Expenses Key on the Card
+    let updatedExpenses;
+    let updatedMoney;
+    cardRef.once("value", (snapshot) => {
+      updatedExpenses = snapshot.val().expenses - cost;
+      updatedMoney = snapshot.val().money + cost;
+      cardExpensesRef
+        .set(updatedExpenses)
+        .then(function () {
+          console.log("Expenses on the card updated");
+        })
+        .catch(function (error) {
+          console.error("error updating the expenses on the card", error);
+        });
+      cardMoneyRef
+        .set(updatedMoney)
+        .then(function () {
+          console.log("Money on the card updated");
+        })
+        .catch(function (error) {
+          console.error("error updating the money on the card", error);
+        });
+    });
 
     // Remove the purchase from the collection
     this.props.firebase
@@ -108,17 +135,19 @@ class Purchase extends Component {
 
     // Remove the purchase from the card purchases list
     this.props.firebase
-    .cardPurchase(cid, key)
-    .remove()
-    .then(function () {
-      console.log("Element deleted from card's purchases");
-    })
-    .catch(function (error) {
-      console.error("Error removing element from card's purchases: ", error);
-    });
-    
+      .cardPurchase(cid, key)
+      .remove()
+      .then(function () {
+        console.log("Element deleted from card's purchases");
+      })
+      .catch(function (error) {
+        console.error("Error removing element from card's purchases: ", error);
+      });
+
     // Rewrite the new cards list without the one deleted
-    const filteredPurchases = this.state.purchases.filter(purchase => purchase.pid !== key);
+    const filteredPurchases = this.state.purchases.filter(
+      (purchase) => purchase.pid !== key
+    );
     await this.setState({ purchases: filteredPurchases });
     console.log(this.state.purchases);
   };
@@ -137,6 +166,7 @@ class Purchase extends Component {
     const userPurchasesListRef = this.props.firebase.userPurchases(uid);
     const cardPurchasesListRef = this.props.firebase.cardPurchases(cid);
     const cardMoneyRef = this.props.firebase.cardMoney(cid);
+    const cardExpensesRef = this.props.firebase.cardExpenses(cid);
     console.log(newPurchase);
     console.log(userCard);
 
@@ -148,13 +178,28 @@ class Purchase extends Component {
     let updatedMoney;
     cardMoneyRef.once("value", (snapshot) => {
       updatedMoney = snapshot.val() - newPurchase.cost;
-      cardMoneyRef.set(updatedMoney)
-      .then(function () {
-        console.log("Money on the card updated");
-      })
-      .catch(function (error) {
-        console.error("error updating the money on the card", error);
-      });
+      cardMoneyRef
+        .set(updatedMoney)
+        .then(function () {
+          console.log("Money on the card updated");
+        })
+        .catch(function (error) {
+          console.error("error updating the money on the card", error);
+        });
+    });
+
+    // Update the actual current money and purchases on the card
+    let updatedExpenses;
+    cardExpensesRef.once("value", (snapshot) => {
+      updatedExpenses = snapshot.val() + newPurchase.cost;
+      cardExpensesRef
+        .set(updatedExpenses)
+        .then(function () {
+          console.log("Expenses on the card updated");
+        })
+        .catch(function (error) {
+          console.error("error updating the expenses on the card", error);
+        });
     });
 
     // Add the Purchase to Firebase
@@ -172,21 +217,27 @@ class Purchase extends Component {
       const purchasesList = snapshot.val();
       if (purchasesList) {
         purchasesList[newPurchaseId] = true;
-        userPurchasesListRef.set(purchasesList)
-        .then(function () {
-          console.log("New Purchase added to the user's purchases list");
-        })
-        .catch(function (error) {
-          console.error("error adding a new purchase to the user's purchases list", error);
-        });
-      } else { userPurchasesListRef.set({ [newPurchaseId]: true })
-      .then(function () {
-        console.log("New Purchase added to the user");
-      })
-      .catch(function (error) {
-        console.error("error adding the first new purchase to user", error);
-      });
-    }
+        userPurchasesListRef
+          .set(purchasesList)
+          .then(function () {
+            console.log("New Purchase added to the user's purchases list");
+          })
+          .catch(function (error) {
+            console.error(
+              "error adding a new purchase to the user's purchases list",
+              error
+            );
+          });
+      } else {
+        userPurchasesListRef
+          .set({ [newPurchaseId]: true })
+          .then(function () {
+            console.log("New Purchase added to the user");
+          })
+          .catch(function (error) {
+            console.error("error adding the first new purchase to user", error);
+          });
+      }
     });
 
     // Save the current card's purchases in a variable
@@ -194,22 +245,27 @@ class Purchase extends Component {
       const purchasesList = snapshot.val();
       if (purchasesList) {
         purchasesList[newPurchaseId] = true;
-        cardPurchasesListRef.set(purchasesList)
-        .then(function () {
-          console.log("New Purchase added to the card list");
-        })
-        .catch(function (error) {
-          console.error("error adding a new purchase to the card list", error);
-        });
-      } else { cardPurchasesListRef.set({ [newPurchaseId]: true })
-      .then(function () {
-        console.log("New Purchase added to the card");
+        cardPurchasesListRef
+          .set(purchasesList)
+          .then(function () {
+            console.log("New Purchase added to the card list");
+          })
+          .catch(function (error) {
+            console.error(
+              "error adding a new purchase to the card list",
+              error
+            );
+          });
+      } else {
+        cardPurchasesListRef
+          .set({ [newPurchaseId]: true })
+          .then(function () {
+            console.log("New Purchase added to the card");
+          })
+          .catch(function (error) {
+            console.error("error adding a new purchase to the card", error);
+          });
       }
-      )
-      .catch(function (error) {
-        console.error("error adding a new purchase to the card", error);
-      });
-    }
     });
 
     // Details of the new Purchase
@@ -233,16 +289,16 @@ class Purchase extends Component {
       <div className={this.props.classes.root}>
         <Grid container spacing={4}>
           <Grid item lg={3} md={6} xl={3} xs={12}>
-            <AddPurchase 
-              addPurchase = {this.addPurchase} 
-              cards = {this.state.cards}
-              />
+            <AddPurchase
+              addPurchase={this.addPurchase}
+              cards={this.state.cards}
+            />
           </Grid>
 
           <Grid item lg={9} md={6} xl={9} xs={12}>
             <PurchaseList
-              purchases = {this.state.purchases}
-              deletePurchase = {this.deletePurchase}
+              purchases={this.state.purchases}
+              deletePurchase={this.deletePurchase}
             />
           </Grid>
         </Grid>

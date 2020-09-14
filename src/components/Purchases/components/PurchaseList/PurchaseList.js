@@ -58,7 +58,7 @@ class PurchaseList extends Component {
                 <TableCell align="center">
                   <IconButton
                     aria-label="delete"
-                    onClick={() => this.deletePurchaseFn(purchase.pid, purchase.cid)}
+                    onClick={() => this.deletePurchaseFn(purchase.pid, purchase.cid, purchase.cost)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -71,8 +71,8 @@ class PurchaseList extends Component {
     );
   }
 
-  deletePurchaseFn = (key, cid) => {
-    this.props.deletePurchase(key, cid);
+  deletePurchaseFn = (key, cid, cost) => {
+    this.props.deletePurchase(key, cid, cost);
   };
 }
 

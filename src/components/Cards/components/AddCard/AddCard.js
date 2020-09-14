@@ -220,9 +220,11 @@ class AddCard extends Component {
       name: name,
       owner: owner,
       money: parseInt(money),
+      expenses: 0,
       color: color,
       [uid]: true,
     }
+    
     this.setState({ ...INITIAL_STATE });
     event.preventDefault();
 
