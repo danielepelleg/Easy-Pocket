@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-import { Budget, Outgoing, TaskProgress, TrafficByCard } from './components';
+import { Budget, CostByCategory, LatestPurchases, Outgoing, TaskProgress, TrafficByCard, TrafficByCategory } from './components';
 
 import { withFirebase } from "components/Firebase";
 
@@ -79,11 +79,14 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { cards } = this.state;
+    const { cards, purchases } = this.state;
 
     const totalMoney = parseInt(cards.reduce((moneyTotal, card) => moneyTotal + card.money, 0));
     const totalCost = parseInt(cards.reduce((costTotal, card) => costTotal + card.expenses, 0));
     const percentageSpent = parseFloat((totalCost/(totalMoney + totalCost))*100);
+
+    // Purchases Ordered by Date (ASC)
+    const sortedPurchases = purchases.slice().sort((a, b) => new Date(a.date) - new Date(b.date) )
 
     return (
       <div className={this.props.classes.root}>
@@ -128,7 +131,7 @@ class Dashboard extends Component {
           </Grid>
           <Grid
             item
-            lg={3}
+            lg={2}
             sm={6}
             xl={3}
             xs={12}
@@ -142,7 +145,9 @@ class Dashboard extends Component {
             xl={9}
             xs={12}
           >
-           
+           <LatestPurchases 
+              purchases = {sortedPurchases}
+           />
           </Grid>
           <Grid
             item
@@ -158,21 +163,26 @@ class Dashboard extends Component {
           </Grid>
           <Grid
             item
-            lg={4}
+            lg={6}
             md={6}
             xl={3}
             xs={12}
           >
-            
+            <TrafficByCategory  
+              purchases = {purchases}
+              totalOutgoings = {totalCost}
+            />
           </Grid>
           <Grid
             item
-            lg={8}
+            lg={6}
             md={12}
             xl={9}
             xs={12}
           >
-            
+            <CostByCategory 
+              purchases = {purchases}
+           />
           </Grid>
         </Grid>
       </Grid>
