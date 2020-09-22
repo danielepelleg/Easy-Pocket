@@ -43,7 +43,7 @@ const Routes = () => (
         exact path={ROUTES.CARDS} component={Cards} layout={MainLayout}
       />
       <RouteWithLayout
-        exact path={ROUTES.PAYMENTS} component={Purchases} layout={MainLayout}
+        exact path={ROUTES.PURCHASES} component={Purchases} layout={MainLayout}
       />
       <RouteWithLayout
         exact path={ROUTES.ACCOUNT} component={Account} layout={MainLayout}

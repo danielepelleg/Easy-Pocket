@@ -59,8 +59,8 @@ const Sidebar = props => {
       icon: <CreditCardIcon />
     },
     {
-      title: 'Payments',
-      href: '/payments',
+      title: 'Purchases',
+      href: '/purchases',
       icon: <ShoppingBasketIcon />
     },
     {
