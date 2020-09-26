@@ -17,6 +17,7 @@
 .env.local
 .env.*.local
 .env
+.lock
 
 # Log files
 npm-debug.log*
