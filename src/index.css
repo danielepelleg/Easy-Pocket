@@ -5,16 +5,8 @@ body{
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  /*
-  background: linear-gradient(45deg, #ff5900 30%, #FF8E53 90%) center center fixed;
-  */
-  
+
   background-image: url("./resources/pattern_transparent.png");
-  /*
-  background-image: url("./resources/pattern_transparent.png"), linear-gradient(45deg, #ff5900 30%, #FF8E53 90%);
-  */
-  
 }
 
 code {
