@@ -30,18 +30,21 @@ export default {
     lineHeight: '24px'
   },
   h5: {
-    color: palette.text.primary,
+    color: palette.text.title,
     fontWeight: 500,
-    fontSize: '16px',
+    fontSize: '25px',
     letterSpacing: '-0.05px',
-    lineHeight: '20px'
+    lineHeight: '20px',
+    fontFamily: "Arial, Helvetica, sans-serif",
+    textAlign: "center",
   },
   h6: {
-    color: palette.text.primary,
+    color: palette.text.error,
     fontWeight: 500,
     fontSize: '14px',
     letterSpacing: '-0.05px',
-    lineHeight: '20px'
+    fontFamily: "Arial, Helvetica, sans-serif",
+    textAlign: 'center'
   },
   subtitle1: {
     color: palette.text.primary,

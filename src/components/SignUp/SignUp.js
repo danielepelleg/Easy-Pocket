@@ -143,7 +143,7 @@ class SignUp extends Component {
           <Avatar className={this.props.classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1-2" variant="h5">
+          <Typography component="h5" variant="h5">
             Sign up
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.onSubmit}>

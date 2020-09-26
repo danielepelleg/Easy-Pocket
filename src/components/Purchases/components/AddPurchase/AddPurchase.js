@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -265,8 +266,9 @@ class AddPurchase extends Component {
             >
               Save
             </Button>
+            <CssBaseline />
             { invalidPurchase ?
-              <Typography component="h5-6" variant="h5">
+              <Typography component="h6" variant="h6">
               NOT ENOGH MONEY ON THE CARD
               </Typography> : null
             }
