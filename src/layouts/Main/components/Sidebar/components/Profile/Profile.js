@@ -26,8 +26,7 @@ class Profile extends Component {
 
   render() {
     const user = {
-      avatar: "/images/avatars/avatar_11.png",
-      bio: "User",
+      avatar: "https://www.flaticon.com/svg/static/icons/svg/848/848006.svg",
     };
 
     return (
@@ -42,12 +41,11 @@ class Profile extends Component {
               className={this.props.classes.avatar}
               component={RouterLink}
               src={user.avatar}
-              to="/settings"
+              to="/account"
             />
             <Typography className={this.props.classes.name} variant="h4">
               {authUser.name}
             </Typography>
-            <Typography variant="body2">{user.bio}</Typography>
           </div>
         )}
       </AuthUserContext.Consumer>
