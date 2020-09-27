@@ -124,19 +124,19 @@ class AddPurchase extends Component {
     // Define the Purchase's Categories
     const categories = [
       {
-        value: "clothing",
+        value: "CLOTHING",
         label: "Clothing",
       },
       {
-        value: "food",
+        value: "FOOD",
         label: "Food",
       },
       {
-        value: "technology",
+        value: "TECHNOLOGY",
         label: "Technology",
       },
       {
-        value: "culture",
+        value: "CULTURE",
         label: "Culture",
       },
     ];

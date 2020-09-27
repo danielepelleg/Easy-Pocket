@@ -58,26 +58,26 @@ const TrafficByCategory = (props, className, ...rest) => {
 
   const categoriesColor = ["#8A7C5C", "#F09240", "#7EF2E7", "#20BD82"];
 
-  const categoriesName = ["clothing", "food", "technology", "culture"];
+  const categoriesName = ["CLOTHING", "FOOD", "TECHNOLOGY", "CULTURE"];
 
   const categoriesPurchase = [
     {
-      name: "Clothing",
+      name: "CLOTHING",
       color: "#8A7C5C",
       cost: totalExpensesCategory[0]
     },
     {
-      name: "Food",
+      name: "FOOD",
       color: "#F09240",
       cost: totalExpensesCategory[1]
     },
     {
-      name: "Technology",
+      name: "TECHNOLOGY",
       color: "#7EF2E7",
       cost: totalExpensesCategory[2]
     },
     {
-      name: "Culture",
+      name: "CULTURE",
       color: "#20BD82",
       cost: totalExpensesCategory[3]
     },
