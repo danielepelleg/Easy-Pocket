@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     boxShadow: "0 1px 1px 1px rgba(255, 255, 255, .4)",
     color: "white",
-    height: "40px",
+    height: "50px",
     width: "32%",
     padding: "0 30px",
     background: "linear-gradient(45deg, #ff8e53 30%, #ffb00d 90%)",
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 const Main = () => {
   let redirect = null;
   if (!!firebase.authUser) redirect = ROUTES.SIGN_IN;
-  else redirect = ROUTES.HOME;
+  else redirect = ROUTES.DASHBOARD;
   const classes = useStyles();
 
   return (
@@ -82,11 +82,13 @@ const Main = () => {
                 Registra le spese che fai, alla gestione ci pensa lui.
               </h3>
             </div>
+            <Grid item xs={12}>
             <Link to={redirect}>
               <Button variant="contained" className={classes.startButton}>
                 Get Started
               </Button>
             </Link>
+            </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6} className={classes.container}>
