@@ -13,7 +13,8 @@ import {
   Login,
   Cards,
   Purchases,
-  Account
+  Account,
+  Quotes
 } from './components'
 
 
@@ -50,6 +51,9 @@ const Routes = () => (
       />
       <RouteWithLayout
         exact path={ROUTES.DASHBOARD} component={Dashboard} layout={MainLayout}
+      />
+      <RouteWithLayout
+        exact path={ROUTES.QUOTES} component={Quotes} layout={MainLayout}
       />
     </Switch>
 );
