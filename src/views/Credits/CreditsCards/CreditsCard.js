@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card} from "@material-ui/core";
+import {Card, CardHeader} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
@@ -21,7 +21,9 @@ const useStyles = makeStyles({
         color:"red"
     },
     subtitle:{
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        fontSize: "24px",
         color:"orange"
     }
 
@@ -31,17 +33,18 @@ class CreditsCardBase extends Component {
 
 render() {
         return(
-            <Card className={this.props.classes.root} variant="outlined">
+            <Card className={this.props.classes.root} variant="outlined" style = {{backgroundColor: this.props.color, opacity: 0.85}}>
+                <Avatar alt="Photo" src={this.props.image} className={this.props.classes.avatar} />
+                <CardHeader
+                    titleTypographyProps={{ component: "h1", variant: "h1" }}
+                    title= {this.props.name}
+                />
                 <CardContent>
-                    <Avatar alt="Photo" src={this.props.image} className={this.props.classes.avatar} />
-                    <Typography variant="h4" component="h3" className={this.props.classes.title}> {this.props.name} </Typography>
                     <Typography className={this.props.classes.subtitle}>GitHub</Typography>
-                    <Typography component="p"> {this.props.github} </Typography>
+                    <Typography variant="h4"> <a href={this.props.github}> {this.props.github} </a></Typography>
                     <Typography className={this.props.classes.subtitle}>Email</Typography>
-                    <Typography component="p"> {this.props.email} </Typography>
-                    <Typography className={this.props.classes.subtitle}>Description</Typography>
+                    <Typography variant="h4"> {this.props.email} </Typography>
                     {/*maybe create a collapse card with a long and nice description*/}
-                    <Typography component="p"> {this.props.description}</Typography>
                 </CardContent>
             </Card>
         )
