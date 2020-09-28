@@ -64,7 +64,7 @@ class Profile extends Component {
               src={user.avatar}
               to="/account"
             />
-            <Typography className={this.props.classes.name} variant="h4">
+            <Typography className={this.props.classes.name} variant="h3">
               {authUser.name ? authUser.name : user.name}
             </Typography>
           </div>
