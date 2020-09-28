@@ -25,16 +25,16 @@ const CostByCategory = (props, className, ...rest) => {
   const totalExpenses = [0, 0, 0, 0];
   purchases.map(({ cost, category }) => {
     switch (category) {
-      case "clothing":
+      case "CLOTHING":
         totalExpenses[0] = totalExpenses[0] + cost
         break;
-      case "food":
+      case "FOOD":
         totalExpenses[1] = totalExpenses[1] + cost
         break;
-      case "technology":
+      case "TECHNOLOGY":
         totalExpenses[2] = totalExpenses[2] + cost
         break;
-      case "culture":
+      case "CULTURE":
         totalExpenses[3] = totalExpenses[3] + cost
         break;
       default:

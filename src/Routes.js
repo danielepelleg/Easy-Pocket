@@ -7,15 +7,19 @@ import * as ROUTES from './constants/routes';
 
 import {
   Home,
-  Dashboard,
   SignUp,
   Main,
   Login,
+} from './components'
+
+import {
+  Account,
+  Dashboard,
   Cards,
   Purchases,
-  Account,
   Quotes
-} from './components'
+} from './views'
+
 
 
 const Routes = () => (
