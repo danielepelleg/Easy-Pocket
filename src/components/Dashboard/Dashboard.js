@@ -165,7 +165,7 @@ class Dashboard extends Component {
             item
             lg={6}
             md={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <TrafficByCategory  
@@ -177,7 +177,7 @@ class Dashboard extends Component {
             item
             lg={6}
             md={12}
-            xl={9}
+            xl={8}
             xs={12}
           >
             <CostByCategory 

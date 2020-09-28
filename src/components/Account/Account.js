@@ -131,12 +131,12 @@ class AccountDetails extends Component {
     return (
       <div className={this.props.classes.root}>
         <Grid container spacing={2}>
-          <Grid item lg={10} md={6} xl={3} xs={12}>
+          <Grid item lg={10} md={6} xl={12} xs={12}>
             <UpdateAccount 
             user={user} 
             updateUser={this.updateUser} />
           </Grid>
-          <Grid item lg={10} md={6} xl={3} xs={12}>
+          <Grid item lg={10} md={6} xl={12} xs={12}>
             <AccountInformation
               cardsNumber={nCard}
               paymentsNumber={nPurchases}
