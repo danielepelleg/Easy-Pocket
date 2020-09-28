@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-import { Budget, CostByCategory, LatestPurchases, Outgoing, TaskProgress, TrafficByCard, TrafficByCategory } from './components';
+import { Budget, CostByCategory, LatestPurchases, Outgoing, TaskProgress, TrafficByCard, TrafficByCategory, UserData } from './components';
 
 import { withFirebase } from "components/Firebase";
 
@@ -16,6 +16,7 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
+      user: {},
       purchases: [],
       cards: [],
     };
@@ -28,6 +29,11 @@ class Dashboard extends Component {
       if (user) {
         const uid = currentComponent.props.firebase.auth.currentUser.uid;
         const refCardList = currentComponent.props.firebase.userCards(uid);
+        const refUser = currentComponent.props.firebase.user(uid);
+
+        refUser.once("value").then(function (snapshot) {
+          currentComponent.setState({ user: snapshot.val() });
+        });
 
         refCardList.once("value").then(function (snapshot) {
           cardsIds = snapshot.val();
@@ -79,7 +85,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { cards, purchases } = this.state;
+    const { cards, purchases, user } = this.state;
 
     const totalMoney = parseInt(cards.reduce((moneyTotal, card) => moneyTotal + card.money, 0));
     const totalCost = parseInt(cards.reduce((costTotal, card) => costTotal + card.expenses, 0));
@@ -131,12 +137,12 @@ class Dashboard extends Component {
           </Grid>
           <Grid
             item
-            lg={2}
+            lg={3}
             sm={6}
             xl={3}
             xs={12}
           >
-            
+            <UserData user= {user} />
           </Grid>
           <Grid
             item
