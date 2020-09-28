@@ -23,10 +23,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+    };
+  }
+
+  componentDidMount() {
+    const currentComponent = this;
+    this.props.firebase.auth.onAuthStateChanged(function (user) {
+      if (user) {
+        const uid = currentComponent.props.firebase.auth.currentUser.uid;
+        const refUser = currentComponent.props.firebase.user(uid);
+
+        refUser.once("value").then(function (snapshot) {
+          currentComponent.setState({ user: snapshot.val() });
+        });
+      }
+    });
+  }
 
   render() {
     const user = {
       avatar: "https://www.flaticon.com/svg/static/icons/svg/848/848006.svg",
+      name: this.state.user.name,
     };
 
     return (
@@ -44,7 +65,7 @@ class Profile extends Component {
               to="/account"
             />
             <Typography className={this.props.classes.name} variant="h4">
-              {authUser.name}
+              {authUser.name ? authUser.name : user.name}
             </Typography>
           </div>
         )}
