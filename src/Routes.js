@@ -10,6 +10,7 @@ import {
   SignUp,
   Main,
   Login,
+
 } from './components'
 
 import {
@@ -17,7 +18,8 @@ import {
   Dashboard,
   Cards,
   Purchases,
-  Quotes
+  Quotes,
+  Credits
 } from './views'
 
 
@@ -58,6 +60,9 @@ const Routes = () => (
       />
       <RouteWithLayout
         exact path={ROUTES.QUOTES} component={Quotes} layout={MainLayout}
+      />
+      <RouteWithLayout
+        exact path={ROUTES.CREDITS} component={Credits} layout={MainLayout}
       />
     </Switch>
 );
