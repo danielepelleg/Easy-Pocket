@@ -52,7 +52,7 @@ class QuoteBase extends Component {
             <div className={this.props.classes.details}>
               <div>
 
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant="h3">
                   {quote.phrase} 
                 </Typography>
 
