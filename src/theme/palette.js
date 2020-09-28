@@ -59,6 +59,7 @@ export default {
     primary: colors.blueGrey[900],
     secondary: colors.blueGrey[600],
     title: "#F95700",
+    header: "#ffffff",
     error: 'red',
     link: colors.blue[600]
   },
