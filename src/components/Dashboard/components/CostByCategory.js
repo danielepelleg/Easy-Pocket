@@ -46,7 +46,7 @@ const CostByCategory = (props, className, ...rest) => {
   const categoriesColor = ["#8A7C5C", "#F09240", "#7EF2E7", "#20BD82"];
 
   // Create an array which contains the Name of the categories
-  const categoriesName = ["clothing", "food", "technology", "culture"];
+  const categoriesName = ["CLOTHING", "FOOD", "TECHNOLOGY", "CULTURE"];
 
   const data = {
     datasets: [
@@ -119,7 +119,7 @@ const CostByCategory = (props, className, ...rest) => {
       <CardHeader title="Cost by Category" />
       <Divider />
       <CardContent>
-        <Box height={350} position="relative">
+        <Box height={400} position="relative">
           <Bar data={data} options={options} />
         </Box>
       </CardContent>
