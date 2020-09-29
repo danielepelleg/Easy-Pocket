@@ -33,7 +33,7 @@
   - [Quotes](#quotes)
 - [License](#license)
 - [Deploy](#deploy)
-- [CONTRIBUTORS](#contributors)
+- [Contributors](#contributors)
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
@@ -178,7 +178,7 @@ This application is deployed to Netlify.
 
 <!-- CONTRIBUTORS -->
 
-## CONTRIBUTORS
+## Contributors
 
 [Daniele Pellegrini](https://github.com/danielepelleg) - 285240
 
