@@ -310,7 +310,7 @@ class AddPurchase extends Component {
     this.setState({ ...INITIAL_STATE });
     event.preventDefault();
 
-    // Add the Card to Firebase
+    // Add the Purchase to Firebase
     this.props.addPurchase(newPurchase, card);
   };
 }

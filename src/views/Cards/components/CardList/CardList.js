@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import CardItem from "../CardItem";
 import { withAuthentication } from "components/Session";
 import { compose } from "recompose";
+import {number} from "prop-types";
 
 class CardList extends Component {
   constructor(props) {
@@ -50,6 +51,19 @@ class CardList extends Component {
     });
   }
 
+  addMoney = async (cid, cash) => {
+    const cardMoneyRef = this.props.firebase.cardMoney(cid);
+    await
+        cardMoneyRef.once("value", (snapshot) => {
+          const newMoney = snapshot.val() + cash;
+          cardMoneyRef.set(newMoney).then(function () {
+            console.log("Added money on the card");
+          }).catch(function (error) {
+            console.error("error can't add money on the card", error);
+          });
+        });
+  }
+
   render() {
     const { cards } = this.props;
 
@@ -65,6 +79,7 @@ class CardList extends Component {
                   deleteCardFn = {() => { 
                     this.deleteCardList(_card.cid); 
                   }}
+                  addMoneyFn ={this.addMoney}
                 ></CardItem>
               );
             })}
@@ -77,6 +92,7 @@ class CardList extends Component {
   deleteCardList = key => {
     this.props.deleteCardFn(key);
   }
+
 }
 
 const CardListBase = compose(withFirebase, withAuthentication)(CardList);

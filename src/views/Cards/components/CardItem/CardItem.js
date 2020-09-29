@@ -37,23 +37,22 @@ class CardBase extends Component {
      */
     constructor(props) {
         super(props);
-
         this.state = {
-            cid: "",
-            name: "",
-            owner: "",
-            money: "",
-            color: "",
-            newcash: 0,
-            expanded: false
+            money: this.props.card.money,
+            newCash: "",
+            expanded: false,
         };
     }
+
+    onChange = (event) => {
+        this.setState({[event.target.name]: event.target.value});
+    };
 
     render() {
 
         const {card} = this.props;
         const expanded = this.state.expanded;
-        const isValid = this.state.newcash < 0;
+        const isValid = this.state.newCash <= 0;
 
         return (
             <Grid item lg={3} md={6} xl={3} xs={12}>
@@ -74,7 +73,7 @@ class CardBase extends Component {
                             <div>
 
                                 <Typography gutterBottom variant="h3">
-                                    {card.money} €
+                                    {this.state.money} €
                                 </Typography>
 
                                 <Typography
@@ -95,7 +94,9 @@ class CardBase extends Component {
                         <Button
                             className={this.props.classes.uploadButton}
                             variant="text"
-                            onClick={() => {this.handleExpandClick()}}
+                            onClick={() => {
+                                this.handleExpandClick()
+                            }}
                             aria-expanded={expanded}
                             aria-label="show more"
                         >
@@ -115,16 +116,27 @@ class CardBase extends Component {
                         <CardContent>
                             <TextField
                                 fullWidth
-                                label="AddMoney"
+                                label="Add Money"
                                 margin="dense"
-                                name="addmoney"
+                                name="newCash"
                                 onChange={this.onChange}
                                 type="number"
                                 required
-                                value={this.state.newcash}
-                                placeholder="AddMoney"
+                                value={this.state.newCash}
+                                placeholder="Add Money"
                                 variant="outlined"
                             />
+                            <Button
+                                disabled={isValid}
+                                onClick={() => {
+                                    this.handleAddMoneyClick()
+                                }}
+                                color="primary"
+                                type="submit"
+                                variant="contained"
+                            >
+                                Save
+                            </Button>
                         </CardContent>
                     </Collapse>
 
@@ -142,7 +154,21 @@ class CardBase extends Component {
     }
 
     handleExpandClick = () => {
-        this.setState({expanded: !this.state.expanded })
+        this.setState({expanded: !this.state.expanded})
+    }
+
+    handleAddMoneyClick = () => {
+        const newCash = parseInt(this.state.newCash);
+
+
+        this.setState(
+            {
+                newCash: 0,
+                money:this.state.money + newCash,
+            })
+        this.handleExpandClick();
+
+        this.props.addMoneyFn(this.props.card.cid, newCash);
     }
 }
 
