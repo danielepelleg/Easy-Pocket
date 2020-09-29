@@ -41,13 +41,13 @@ const Topbar = props => {
         </RouterLink>
         <h2><pre> Pocket Money</pre></h2>
         <div className={classes.flexGrow} />
-        <Hidden mdDown>
-          
+        
+        <Hidden mdDown>  
         <SignOutButton />
-      
-
         </Hidden>
+        
         <Hidden lgUp>
+        <SignOutButton />
           <IconButton
             color="inherit"
             onClick={onSidebarOpen}
