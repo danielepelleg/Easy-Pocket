@@ -2,7 +2,7 @@
   <br />
     <p align="center">
   <a href="https://github.com/danielepelleg/Easy-Pocket">
-    <img src="/images/logos/logo36.png" alt="Logo" width="130" height="130">
+    <img src="https://www.flaticon.com/svg/static/icons/svg/1077/1077874.svg" alt="Logo" width="130" height="130">
   </a>
   <h1 align="center">Easy Pocket </h1>
   <p align="center">
@@ -32,7 +32,7 @@
   - [Account](#account)
   - [Quotes](#quotes)
 - [License](#license)
-- [Deploy ![Netlify Status](https://app.netlify.com/sites/easypocket/deploys)](#deploy-img-srchttpsapinetlifycomapiv1badges92d547f0-c894-4a9d-be1b-a019885101e4deploy-status-altnetlify-status)
+- [Deploy](#deploy)
 - [CONTRIBUTORS](#contributors)
 <!-- ABOUT THE PROJECT -->
 
@@ -171,7 +171,10 @@ Distributed under the GPL License.
 
 <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></div>
 
-## Deploy [![Netlify Status](https://api.netlify.com/api/v1/badges/92d547f0-c894-4a9d-be1b-a019885101e4/deploy-status)](https://app.netlify.com/sites/easypocket/deploys)
+## Deploy 
+This application is deployed to Netlify.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/92d547f0-c894-4a9d-be1b-a019885101e4/deploy-status)](https://app.netlify.com/sites/easypocket/deploys)
 
 <!-- CONTRIBUTORS -->
 
