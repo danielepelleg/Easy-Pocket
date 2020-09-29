@@ -35,7 +35,7 @@ const Topbar = props => {
         <RouterLink to="/">
           <img
             alt="Logo"
-            src="/images/logos/logo.png"
+            src="/images/logos/logo36.png"
             className = {classes.logo}
           />
         </RouterLink>
