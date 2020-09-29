@@ -5,7 +5,6 @@ import Container from "@material-ui/core/Container";
 import CardItem from "../CardItem";
 import { withAuthentication } from "components/Session";
 import { compose } from "recompose";
-import {number} from "prop-types";
 
 class CardList extends Component {
   constructor(props) {
