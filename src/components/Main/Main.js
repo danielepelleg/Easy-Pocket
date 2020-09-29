@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(232, 49, 12, .75)",
     boxShadow: "0 2px 3px 0 rgba(255, 255, 255, .4)",
     borderRadius: 12,
-    width: "70%",
+    width: "80%",
     padding: "0 30px 30px",
     color: "white",
     justifyContent: "center",
@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   logo: {
-    height: 400,
-    width: 400,
+    height: "60%",
+    width: "60%",
   },
 
   container: {
@@ -73,13 +73,18 @@ const Main = () => {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={6} className={classes.container}>
+      <Grid item lg={6} xl={6} md={6} xs={12} className={classes.container}>
+          <Grid container className={classes.logoBox}>
+            <img src={Logo} className={classes.logo} alt="Logo" />
+          </Grid>
+        </Grid>
+        <Grid item lg={6} xl={6} md={6} xs={12} className={classes.container}>
           <Grid container className={classes.textBox}>
             <h1>Pocket Money</h1>
             <div>
               <h3>
-                Il modo più semplice per gestire le tue spese. <br></br>
-                Registra le spese che fai, alla gestione ci pensa lui.
+                The easiest way to manage your outgoings. <br></br>
+                Save your purchases, we take care of their management.
               </h3>
             </div>
             <Grid item xs={12}>
@@ -89,11 +94,6 @@ const Main = () => {
               </Button>
             </Link>
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={6} className={classes.container}>
-          <Grid container className={classes.logoBox}>
-            <img src={Logo} className={classes.logo} alt="Logo" />
           </Grid>
         </Grid>
       </Grid>
