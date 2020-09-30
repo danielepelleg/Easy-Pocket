@@ -126,8 +126,8 @@ class Quote extends Component {
     return (
       <div className={this.props.classes.root}>
         <Grid container spacing={4}>
-        <Grid item lg={3} md={3} xl={3} xs={3}></Grid>
-        <Grid item lg={6} md={6} xl={6} xs={6}>
+        <Grid item lg={3} md={3} xl={3} xs={0}></Grid>
+        <Grid item lg={6} md={6} xl={6} xs={12}>
         <Card style={{ backgroundColor: "#E8310C", opacity: 0.85}}>
           <CardHeader
             titleTypographyProps={{ component: "h1", variant: "h1" }}
